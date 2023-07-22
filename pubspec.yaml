@@ -38,6 +38,10 @@ dependencies:
   auto_size_text: ^3.0.0
   animated_button: ^0.2.0
   getwidget: ^3.1.1
+  string_validator: ^1.0.0
+  cloud_firestore: ^4.8.3
+  firebase: ^9.0.3
+  firebase_auth: ^4.7.1
 
 dev_dependencies:
   flutter_test:
