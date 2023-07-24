@@ -2,8 +2,12 @@ import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:startup/auth/authrepository.dart';
+import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/coach/clogin.dart';
+
+import 'package:startup/coach/csignup.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,57 +20,68 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {'/': (context) => MyHomePage(), 'clogin': (context) => clogin()},
-      theme: ThemeData(
-        iconButtonTheme: IconButtonThemeData(
-            style: ButtonStyle(
-                iconColor: MaterialStateProperty.all<Color>(Colors.black),
-                iconSize: MaterialStatePropertyAll(16))),
-        textTheme: const TextTheme(
-            displayMedium: TextStyle(
-                fontFamily: "Nexa",
-                fontSize: 18,
-                color: Colors.black,
-                fontWeight: FontWeight.w500),
-            headlineLarge: TextStyle(
-              fontFamily: "Nexa",
-              fontSize: 35,
-              color: Colors.white,
-            ),
-            labelSmall: TextStyle(
-              fontFamily: "Nexa",
-              fontSize: 17,
-              color: Color.fromRGBO(255, 255, 255, 1),
-            ),
-            headlineSmall: TextStyle(
-                fontFamily: "Nexa",
-                fontSize: 15,
-                color: Colors.black,
-                fontWeight: FontWeight.w500),
-            headlineMedium: TextStyle(
-                fontFamily: "Nexa",
-                fontSize: 15,
-                color: Colors.black,
-                fontWeight: FontWeight.w400),
-            titleMedium: TextStyle(
-                fontFamily: "Nexa",
-                fontSize: 18,
-                color: Colors.grey,
-                fontWeight: FontWeight.w400),
-            titleSmall: TextStyle(
-                fontFamily: "Nexa",
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold),
-            titleLarge: TextStyle(
-                fontFamily: "Nexa",
-                fontSize: 24,
-                color: Colors.black,
-                fontWeight: FontWeight.bold)),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-            secondary: Color.fromRGBO(29, 144, 255, 1),
-            primary: Color.fromRGBO(26, 26, 26, 1)),
+    return RepositoryProvider(
+      create: (context) => AuthRepository(),
+      child: BlocProvider(
+        create: (context) => AuthBloc(
+            authRepository: RepositoryProvider.of<AuthRepository>(context)),
+        child: MaterialApp(
+          routes: {
+            '/': (context) => MyHomePage(),
+            'csignup': (context) => clogin(),
+            'clogin': (context) => csignin(),
+          },
+          theme: ThemeData(
+            iconButtonTheme: IconButtonThemeData(
+                style: ButtonStyle(
+                    iconColor: MaterialStateProperty.all<Color>(Colors.black),
+                    iconSize: MaterialStatePropertyAll(16))),
+            textTheme: const TextTheme(
+                displayMedium: TextStyle(
+                    fontFamily: "Nexa",
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500),
+                headlineLarge: TextStyle(
+                  fontFamily: "Nexa",
+                  fontSize: 35,
+                  color: Colors.white,
+                ),
+                labelSmall: TextStyle(
+                  fontFamily: "Nexa",
+                  fontSize: 17,
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                ),
+                headlineSmall: TextStyle(
+                    fontFamily: "Nexa",
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500),
+                headlineMedium: TextStyle(
+                    fontFamily: "Nexa",
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400),
+                titleMedium: TextStyle(
+                    fontFamily: "Nexa",
+                    fontSize: 18,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400),
+                titleSmall: TextStyle(
+                    fontFamily: "Nexa",
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+                titleLarge: TextStyle(
+                    fontFamily: "Nexa",
+                    fontSize: 24,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold)),
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+                secondary: Color.fromRGBO(29, 144, 255, 1),
+                primary: Color.fromRGBO(26, 26, 26, 1)),
+          ),
+        ),
       ),
     );
   }

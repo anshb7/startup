@@ -1,19 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/coach/academyreg.dart';
 import 'package:string_validator/string_validator.dart';
 
-class csignin extends StatefulWidget {
-  const csignin({super.key});
+class clogin extends StatefulWidget {
+  const clogin({super.key});
 
   @override
-  State<csignin> createState() => _csigninState();
+  State<clogin> createState() => _cloginState();
 }
 
-class _csigninState extends State<csignin> {
+class _cloginState extends State<clogin> {
   final formkey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -51,14 +52,14 @@ class _csigninState extends State<csignin> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AutoSizeText(
-                    "Login to your account!",
+                    "The person behind all of it.",
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AutoSizeText(
-                    "Let's get this started",
+                    "Create your account",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
@@ -90,7 +91,7 @@ class _csigninState extends State<csignin> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 30),
                                       child: AutoSizeText(
-                                        "Sign In!",
+                                        "Sign Up!",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge,
@@ -162,6 +163,40 @@ class _csigninState extends State<csignin> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 30),
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    style: TextStyle(
+                                        fontFamily: "Nexa",
+                                        color: Colors.black),
+                                    autocorrect: true,
+                                    decoration: InputDecoration(
+                                        labelStyle:
+                                            TextStyle(fontFamily: "Nexa"),
+                                        labelText: " Re Enter password ",
+                                        border: OutlineInputBorder(
+                                            gapPadding: 2,
+                                            borderRadius:
+                                                BorderRadius.circular(20))),
+                                    textInputAction: TextInputAction.next,
+                                    validator: (value) {
+                                      if (value?.isEmpty == true) {
+                                        return "Input can't be null";
+                                        // } else if (value. != password.text) {
+                                        //   return 'Passwords do not match';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    onSaved: (newValue) {
+                                      setState(() {
+                                        rpassword.text = newValue.toString();
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: Container(
                                     child: Align(
@@ -170,7 +205,7 @@ class _csigninState extends State<csignin> {
                                         color: Color.fromRGBO(26, 26, 26, 1),
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.27,
+                                                0.25,
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.05,
@@ -181,9 +216,9 @@ class _csigninState extends State<csignin> {
                                             formkey.currentState?.save();
 
                                             try {
-                                              await _authenticateWithEmailAndPassword(
+                                              await _signupWithEmailAndPassword(
                                                   context);
-
+                                              // createuser();
                                               final snackbar = SnackBar(
                                                 content: Text(
                                                   "Successfully Added!",
@@ -225,10 +260,10 @@ class _csigninState extends State<csignin> {
         }));
   }
 
-  Future<void> _authenticateWithEmailAndPassword(context) async {
+  Future<void> _signupWithEmailAndPassword(context) async {
     if (formkey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        signInRequested(email.text, password.text),
+        signUpRequested(email.text, password.text),
       );
     }
   }
