@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:startup/auth/authrepository.dart';
 import 'package:startup/bloc/auth_bloc.dart';
+import 'package:startup/coach/academyreg.dart';
 import 'package:startup/coach/clogin.dart';
 
 import 'package:startup/coach/csignup.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
             authRepository: RepositoryProvider.of<AuthRepository>(context)),
         child: MaterialApp(
           routes: {
-            '/': (context) => MyHomePage(),
+            '/': (context) => academyReg(), //MyHomePage(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
           },
