@@ -68,7 +68,7 @@ class _academyRegState extends State<academyReg> {
                     key: formkey,
                     child: Center(
                         child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(0),
                       child: ListView(
                         children: [
                           Align(
@@ -84,180 +84,222 @@ class _academyRegState extends State<academyReg> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              style: TextStyle(
-                                  fontFamily: "Nexa", color: Colors.black),
-                              validator: (value) {
-                                if (isInt(value.toString())) {
-                                  return "Invalid Input";
-                                } else if (value?.isEmpty == true) {
-                                  return "Input can't be null";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autocorrect: true,
-                              decoration: InputDecoration(
-                                  labelText: "Enter Name",
-                                  labelStyle: TextStyle(fontFamily: "Nexa"),
-                                  border: OutlineInputBorder(
-                                      gapPadding: 2,
-                                      borderRadius: BorderRadius.circular(20))),
-                              textInputAction: TextInputAction.next,
-                              onSaved: (newValue) {
-                                setState(() {
-                                  name = newValue.toString();
-                                });
-                              },
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontFamily: "Nexa", color: Colors.black),
+                                validator: (value) {
+                                  if (isInt(value.toString())) {
+                                    return "Invalid Input";
+                                  } else if (value?.isEmpty == true) {
+                                    return "Input can't be null";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                autocorrect: true,
+                                decoration: InputDecoration(
+                                    labelText: "Enter Name",
+                                    labelStyle: TextStyle(fontFamily: "Nexa"),
+                                    border: OutlineInputBorder(
+                                        gapPadding: 2,
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                textInputAction: TextInputAction.next,
+                                onSaved: (newValue) {
+                                  setState(() {
+                                    name = newValue.toString();
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              style: TextStyle(
-                                  fontFamily: "Nexa", color: Colors.black),
-                              validator: (value) {
-                                if (isInt(value.toString())) {
-                                  return "Invalid Input";
-                                } else if (value?.isEmpty == true) {
-                                  return "Input can't be null";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autocorrect: true,
-                              decoration: InputDecoration(
-                                  labelText: "Enter Age",
-                                  labelStyle: TextStyle(fontFamily: "Nexa"),
-                                  border: OutlineInputBorder(
-                                      gapPadding: 2,
-                                      borderRadius: BorderRadius.circular(20))),
-                              textInputAction: TextInputAction.next,
-                              onSaved: (newValue) {
-                                setState(() {
-                                  age = newValue.toString() as double;
-                                });
-                              },
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontFamily: "Nexa", color: Colors.black),
+                                validator: (value) {
+                                  if (isInt(value.toString())) {
+                                    return "Invalid Input";
+                                  } else if (value?.isEmpty == true) {
+                                    return "Input can't be null";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                autocorrect: true,
+                                decoration: InputDecoration(
+                                    labelText: "Enter Age",
+                                    labelStyle: TextStyle(fontFamily: "Nexa"),
+                                    border: OutlineInputBorder(
+                                        gapPadding: 2,
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                textInputAction: TextInputAction.next,
+                                onSaved: (newValue) {
+                                  setState(() {
+                                    age = newValue.toString() as double;
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              keyboardType: TextInputType.phone,
-                              style: TextStyle(
-                                  fontFamily: "Nexa", color: Colors.black),
-                              validator: (value) {
-                                if (isInt(value.toString())) {
-                                  return "Invalid Input";
-                                } else if (value?.isEmpty == true) {
-                                  return "Input can't be null";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autocorrect: true,
-                              decoration: InputDecoration(
-                                  labelText: "Enter PhoneNo",
-                                  labelStyle: TextStyle(fontFamily: "Nexa"),
-                                  border: OutlineInputBorder(
-                                      gapPadding: 2,
-                                      borderRadius: BorderRadius.circular(20))),
-                              textInputAction: TextInputAction.next,
-                              onSaved: (newValue) {
-                                setState(() {
-                                  phoneNo = newValue.toString() as double;
-                                });
-                              },
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: TextFormField(
+                                keyboardType: TextInputType.phone,
+                                style: TextStyle(
+                                    fontFamily: "Nexa", color: Colors.black),
+                                validator: (value) {
+                                  if (isInt(value.toString())) {
+                                    return "Invalid Input";
+                                  } else if (value?.isEmpty == true) {
+                                    return "Input can't be null";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                autocorrect: true,
+                                decoration: InputDecoration(
+                                    labelText: "Enter PhoneNo",
+                                    labelStyle: TextStyle(fontFamily: "Nexa"),
+                                    border: OutlineInputBorder(
+                                        gapPadding: 2,
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                textInputAction: TextInputAction.next,
+                                onSaved: (newValue) {
+                                  setState(() {
+                                    phoneNo = newValue.toString() as double;
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              style: TextStyle(
-                                  fontFamily: "Nexa", color: Colors.black),
-                              validator: (value) {
-                                if (isInt(value.toString())) {
-                                  return "Invalid Input";
-                                } else if (value?.isEmpty == true) {
-                                  return "Input can't be null";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autocorrect: true,
-                              decoration: InputDecoration(
-                                  labelText: "Enter Academy Name",
-                                  labelStyle: TextStyle(fontFamily: "Nexa"),
-                                  border: OutlineInputBorder(
-                                      gapPadding: 2,
-                                      borderRadius: BorderRadius.circular(20))),
-                              textInputAction: TextInputAction.next,
-                              onSaved: (newValue) {
-                                setState(() {
-                                  academyName = newValue.toString();
-                                });
-                              },
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontFamily: "Nexa", color: Colors.black),
+                                validator: (value) {
+                                  if (isInt(value.toString())) {
+                                    return "Invalid Input";
+                                  } else if (value?.isEmpty == true) {
+                                    return "Input can't be null";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                autocorrect: true,
+                                decoration: InputDecoration(
+                                    labelText: "Enter Academy Name",
+                                    labelStyle: TextStyle(fontFamily: "Nexa"),
+                                    border: OutlineInputBorder(
+                                        gapPadding: 2,
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                textInputAction: TextInputAction.next,
+                                onSaved: (newValue) {
+                                  setState(() {
+                                    academyName = newValue.toString();
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              style: TextStyle(
-                                  fontFamily: "Nexa", color: Colors.black),
-                              validator: (value) {
-                                if (isInt(value.toString())) {
-                                  return "Invalid Input";
-                                } else if (value?.isEmpty == true) {
-                                  return "Input can't be null";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              autocorrect: true,
-                              decoration: InputDecoration(
-                                  labelText: "Enter Sport Name",
-                                  labelStyle: TextStyle(fontFamily: "Nexa"),
-                                  border: OutlineInputBorder(
-                                      gapPadding: 2,
-                                      borderRadius: BorderRadius.circular(20))),
-                              textInputAction: TextInputAction.next,
-                              onSaved: (newValue) {
-                                setState(() {
-                                  sportName = newValue.toString();
-                                });
-                              },
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontFamily: "Nexa", color: Colors.black),
+                                validator: (value) {
+                                  if (isInt(value.toString())) {
+                                    return "Invalid Input";
+                                  } else if (value?.isEmpty == true) {
+                                    return "Input can't be null";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                autocorrect: true,
+                                decoration: InputDecoration(
+                                    labelText: "Enter Sport Name",
+                                    labelStyle: TextStyle(fontFamily: "Nexa"),
+                                    border: OutlineInputBorder(
+                                        gapPadding: 2,
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                textInputAction: TextInputAction.next,
+                                onSaved: (newValue) {
+                                  setState(() {
+                                    sportName = newValue.toString();
+                                  });
+                                },
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 30),
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  fontFamily: "Nexa", color: Colors.black),
-                              autocorrect: true,
-                              decoration: InputDecoration(
-                                  labelStyle: TextStyle(fontFamily: "Nexa"),
-                                  labelText: "Enter Years of Experience",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20))),
-                              textInputAction: TextInputAction.next,
-                              validator: (value) {
-                                if (value?.isEmpty == true) {
-                                  return "Input can't be null";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onSaved: (newValue) {
-                                setState(() {
-                                  noOfExp = double.parse(newValue.toString());
-                                });
-                              },
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                    fontFamily: "Nexa", color: Colors.black),
+                                autocorrect: true,
+                                decoration: InputDecoration(
+                                    labelStyle: TextStyle(fontFamily: "Nexa"),
+                                    labelText: "Enter Years of Experience",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                textInputAction: TextInputAction.next,
+                                validator: (value) {
+                                  if (value?.isEmpty == true) {
+                                    return "Input can't be null";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onSaved: (newValue) {
+                                  setState(() {
+                                    noOfExp = double.parse(newValue.toString());
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Center(
+                              child: AnimatedButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  shadowDegree: ShadowDegree.light,
+                                  onPressed: () {},
+                                  child: AutoSizeText(
+                                    "Let's go!",
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  )),
                             ),
                           ),
                         ],

@@ -203,12 +203,12 @@ class _cloginState extends State<clogin> {
                                       alignment: Alignment.center,
                                       child: AnimatedButton(
                                         color: Color.fromRGBO(26, 26, 26, 1),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.25,
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.05,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
                                         onPressed: () async {
                                           final isValid =
                                               formkey.currentState?.validate();
