@@ -5,10 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:startup/auth/authrepository.dart';
 import 'package:startup/bloc/auth_bloc.dart';
-import 'package:startup/coach/academyreg.dart';
+import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
 import 'package:startup/coach/clogin.dart';
 
 import 'package:startup/coach/csignup.dart';
+import 'package:startup/coach/cstudentaddition.dart';
+import 'package:startup/database/databaseprov.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,16 +23,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AuthRepository(),
-      child: BlocProvider(
-        create: (context) => AuthBloc(
-            authRepository: RepositoryProvider.of<AuthRepository>(context)),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => AuthRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => DatabaseService(),
+        )
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+                authRepository: RepositoryProvider.of<AuthRepository>(context)),
+          ),
+          BlocProvider(
+            create: (context) => CoachdbBloc(
+                databaseService:
+                    RepositoryProvider.of<DatabaseService>(context)),
+          ),
+        ],
         child: MaterialApp(
           routes: {
-            '/': (context) => academyReg(), //MyHomePage(),
+            '/': (context) => studentaddition(), //MyHomePage(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
+            '/studentaddition': (context) => studentaddition(),
           },
           theme: ThemeData(
             iconButtonTheme: IconButtonThemeData(
@@ -60,12 +79,12 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.w500),
                 headlineMedium: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 15,
-                    color: Colors.black,
+                    fontSize: 12,
+                    color: Color.fromRGBO(29, 144, 255, 1),
                     fontWeight: FontWeight.w400),
                 titleMedium: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 18,
+                    fontSize: 12,
                     color: Colors.grey,
                     fontWeight: FontWeight.w400),
                 titleSmall: TextStyle(

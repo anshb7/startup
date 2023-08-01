@@ -18,3 +18,8 @@ class dataSent extends CoachdbState {
   @override
   List<Object> get props => [];
 }
+
+class DatabaseError extends CoachdbState {
+  @override
+  List<Object> get props => [];
+}

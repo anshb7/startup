@@ -7,9 +7,22 @@ abstract class CoachdbEvent extends Equatable {
   List<Object> get props => [];
 }
 
+// ignore: camel_case_types, must_be_immutable
 class dataSend extends CoachdbEvent {
-  CoachInfo coach = CoachInfo(
-      name: "", age: 0, phNo: 0, academyName: "", sportName: "", noOfExp: 0);
-  dataSend({required this.coach});
-  List<Object> get props => [coach];
+  String name;
+  double phoneNo;
+  String sportName;
+  String academyName;
+  double age;
+  double noOfExp;
+
+  dataSend(
+      {required this.name,
+      required this.age,
+      required this.academyName,
+      required this.noOfExp,
+      required this.phoneNo,
+      required this.sportName});
+  List<Object> get props =>
+      [name, phoneNo, sportName, academyName, age, noOfExp];
 }

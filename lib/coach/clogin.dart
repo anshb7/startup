@@ -38,7 +38,10 @@ class _csigninState extends State<csignin> {
         }, builder: (context, state) {
           if (state is Loading) {
             // Displaying the loading indicator while the user is signing up
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            ));
           }
           if (state is unAuthenticated) {
             return Column(
