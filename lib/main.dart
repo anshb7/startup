@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => metricaddition(),
+            '/': (context) => MyHomePage(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
