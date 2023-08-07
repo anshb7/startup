@@ -23,7 +23,7 @@ class _studentadditionState extends State<studentaddition> {
               automaticallyImplyLeading: false,
               title: Text(
                 "Add a Student",
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               backgroundColor: Theme.of(context).colorScheme.secondary,
             ),
@@ -100,48 +100,51 @@ class _studentadditionState extends State<studentaddition> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 30),
-                              child: TextFormField(
-                                style: TextStyle(
-                                    fontFamily: "Nexa", color: Colors.white),
-                                autocorrect: true,
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.50,
+                                child: TextFormField(
+                                  style: TextStyle(
                                       fontFamily: "Nexa", color: Colors.white),
-                                  labelText: "Age",
-                                  focusColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    gapPadding: 2,
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.white),
+                                  autocorrect: true,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                        fontFamily: "Nexa",
+                                        color: Colors.white),
+                                    labelText: "Age",
+                                    focusColor: Colors.white,
+                                    focusedBorder: OutlineInputBorder(
+                                      gapPadding: 2,
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.white),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      gapPadding: 2,
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.white),
+                                    ),
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    gapPadding: 2,
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.white),
-                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  validator: (value) {
+                                    if (value?.isEmpty == true) {
+                                      return "Input can't be null";
+                                      // } else if (value. != password.text) {
+                                      //   return 'Passwords do not match';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  onSaved: (newValue) {
+                                    setState(() {
+                                      //rpassword.text = newValue.toString();
+                                    });
+                                  },
                                 ),
-                                textInputAction: TextInputAction.next,
-                                validator: (value) {
-                                  if (value?.isEmpty == true) {
-                                    return "Input can't be null";
-                                    // } else if (value. != password.text) {
-                                    //   return 'Passwords do not match';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                onSaved: (newValue) {
-                                  setState(() {
-                                    //rpassword.text = newValue.toString();
-                                  });
-                                },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 30),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.27,
                               child: TextFormField(
                                 style: TextStyle(
                                     fontFamily: "Nexa", color: Colors.white),
@@ -149,7 +152,7 @@ class _studentadditionState extends State<studentaddition> {
                                 decoration: InputDecoration(
                                   labelStyle: TextStyle(
                                       fontFamily: "Nexa", color: Colors.white),
-                                  labelText: "Age",
+                                  labelText: "Gender",
                                   focusColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     gapPadding: 2,
@@ -469,7 +472,7 @@ class _studentadditionState extends State<studentaddition> {
                                   //   }
                                   // }
                                 },
-                                child: Text("Submit! ",
+                                child: Text("Let's Go! ",
                                     style:
                                         Theme.of(context).textTheme.labelSmall),
                               ),

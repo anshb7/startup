@@ -10,6 +10,7 @@ import 'package:startup/coach/clogin.dart';
 
 import 'package:startup/coach/csignup.dart';
 import 'package:startup/coach/cstudentaddition.dart';
+import 'package:startup/coach/metrics.dart';
 import 'package:startup/database/databaseprov.dart';
 
 Future main() async {
@@ -46,10 +47,11 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => studentaddition(), //MyHomePage(),
+            '/': (context) => metricaddition(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
+            '/metric': (context) => metricaddition()
           },
           theme: ThemeData(
             iconButtonTheme: IconButtonThemeData(
