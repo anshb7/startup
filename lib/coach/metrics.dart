@@ -1,3 +1,5 @@
+import 'package:animated_button/animated_button.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart' hide LabelPlacement;
@@ -209,6 +211,49 @@ class _metricadditionState extends State<metricaddition> {
                     _value = value;
                   });
                 },
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: AnimatedButton(
+                    color: Color.fromRGBO(29, 144, 255, 1),
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    onPressed: () {
+                      // final isValid =
+                      //     formkey.currentState?.validate();
+                      // if (isValid!) {
+                      //   formkey.currentState?.save();
+
+                      //   try {
+                      //     await _signupWithEmailAndPassword(
+                      //         context);
+                      //     // createuser();
+                      //     final snackbar = SnackBar(
+                      //       content: Text(
+                      //         "Successfully Added!",
+                      //         style: TextStyle(
+                      //             fontSize: 15,
+                      //             color: Colors.white),
+                      //       ),
+                      //     );
+                      //     ScaffoldMessenger.of(context)
+                      //         .showSnackBar(snackbar);
+                      //     // Navigator.push(
+                      //     //     context,
+                      //     //     MaterialPageRoute(
+                      //     //         builder: ((context) =>
+                      //     //             coachDashboard())));
+                      //   } catch (e) {
+                      //     print(e);
+                      //   }
+                      // }
+                    },
+                    child: AutoSizeText("Review Student Details",
+                        style: Theme.of(context).textTheme.labelSmall),
+                  ),
+                ),
               ),
             ]),
           )

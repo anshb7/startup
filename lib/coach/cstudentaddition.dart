@@ -442,7 +442,10 @@ class _studentadditionState extends State<studentaddition> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.5,
-                                onPressed: () async {
+                                onPressed: () {
+                                  if (formkey.currentState!.validate()) {
+                                    Navigator.pushNamed(context, '/metric');
+                                  }
                                   // final isValid =
                                   //     formkey.currentState?.validate();
                                   // if (isValid!) {
