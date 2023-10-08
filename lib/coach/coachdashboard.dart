@@ -1,5 +1,7 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:startup/coach/coachfees.dart';
 
 class cdashboard extends StatefulWidget {
   const cdashboard({super.key});
@@ -9,18 +11,51 @@ class cdashboard extends StatefulWidget {
 }
 
 class _cdashboardState extends State<cdashboard> {
+  var screens = [cdash(), cfees()];
+  var _bottomNavIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/studentaddition");
-        },
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.primary,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, "/studentaddition");
+          },
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
-      ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: AnimatedBottomNavigationBar(
+          iconSize: 30,
+          activeColor: Colors.white,
+          inactiveColor: Colors.grey,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          icons: [Icons.home, Icons.money_rounded],
+          activeIndex: _bottomNavIndex,
+          gapLocation: GapLocation.center,
+          notchSmoothness: NotchSmoothness.verySmoothEdge,
+          leftCornerRadius: 32,
+          rightCornerRadius: 32,
+          onTap: (index) => setState(() => _bottomNavIndex = index),
+          //other params
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        body: screens[_bottomNavIndex]);
+  }
+}
+
+class cdash extends StatefulWidget {
+  const cdash({super.key});
+
+  @override
+  State<cdash> createState() => _cdashState();
+}
+
+class _cdashState extends State<cdash> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: CustomScrollView(
         slivers: [
@@ -46,10 +81,10 @@ class _cdashboardState extends State<cdashboard> {
                         color: Colors.white,
                         offset: Offset.infinite,
                         spreadRadius: 50),
-                    color: Colors.white,
+                    color: Color.fromRGBO(62, 62, 66, 1),
                     title: Text(
                       "Chandalia",
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     subTitle: Text(
                       "20 years old",

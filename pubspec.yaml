@@ -50,6 +50,8 @@ dependencies:
   modal_progress_hud_nsn: ^0.4.0
   syncfusion_flutter_sliders: ^22.2.7
   syncfusion_flutter_charts: ^22.2.7
+  animated_bottom_navigation_bar: ^1.2.0
+  flutter_xlider: ^3.5.0
 
 dev_dependencies:
   flutter_test:

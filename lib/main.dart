@@ -7,6 +7,8 @@ import 'package:startup/auth/authrepository.dart';
 import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
 import 'package:startup/coach/clogin.dart';
+import 'package:startup/coach/coachdashboard.dart';
+import 'package:startup/coach/coachfees.dart';
 
 import 'package:startup/coach/csignup.dart';
 import 'package:startup/coach/cstudentaddition.dart';
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => studentProfile(),
+            '/': (context) => metricaddition(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
                 ),
                 labelSmall: TextStyle(
                   fontFamily: "Nexa",
-                  fontSize: 17,
+                  fontSize: 14,
                   color: Color.fromRGBO(255, 255, 255, 1),
                 ),
                 headlineSmall: TextStyle(
@@ -92,7 +94,7 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.w400),
                 titleSmall: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 24,
+                    fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
                 titleLarge: TextStyle(
@@ -101,7 +103,7 @@ class MyApp extends StatelessWidget {
                     color: Colors.black,
                     fontWeight: FontWeight.bold)),
             colorScheme: ColorScheme.fromSwatch().copyWith(
-                secondary: Color.fromRGBO(29, 144, 255, 1),
+                secondary: Color.fromRGBO(0, 218, 198, 1),
                 primary: Color.fromRGBO(26, 26, 26, 1)),
           ),
         ),
