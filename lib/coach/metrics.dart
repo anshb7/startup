@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +66,17 @@ class _metricadditionState extends State<metricaddition> {
                 itemCount: 7,
               ),
             ),
-            Text("data"),
+            AnimatedButton(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.3,
+                color: Theme.of(context).colorScheme.secondary,
+                onPressed: () {
+                  //Navigator.pushNamed(context, '/')
+                },
+                child: AutoSizeText(
+                  "Submit!",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ))
           ],
         ));
   }

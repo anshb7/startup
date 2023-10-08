@@ -53,6 +53,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.2.0
   flutter_xlider: ^3.5.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

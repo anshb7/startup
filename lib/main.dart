@@ -9,12 +9,15 @@ import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
 import 'package:startup/coach/clogin.dart';
 import 'package:startup/coach/coachdashboard.dart';
 import 'package:startup/coach/coachfees.dart';
-
+import 'package:startup/student/stalerts.dart';
 import 'package:startup/coach/csignup.dart';
 import 'package:startup/coach/cstudentaddition.dart';
 import 'package:startup/coach/metrics.dart';
 import 'package:startup/coach/studentreview.dart';
 import 'package:startup/database/databaseprov.dart';
+import 'package:startup/student/stalerts.dart';
+import 'package:startup/student/sthome.dart';
+import 'package:startup/student/stover.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +53,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => metricaddition(),
+            '/': (context) => sthomepage(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
@@ -99,7 +102,7 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold),
                 titleLarge: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 24,
+                    fontSize: 27,
                     color: Colors.black,
                     fontWeight: FontWeight.bold)),
             colorScheme: ColorScheme.fromSwatch().copyWith(

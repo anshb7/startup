@@ -11,6 +11,7 @@ class studentaddition extends StatefulWidget {
 }
 
 class _studentadditionState extends State<studentaddition> {
+  var _bottomNavIndex = 0;
   final formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class _studentadditionState extends State<studentaddition> {
               automaticallyImplyLeading: false,
               title: Text(
                 "Add a Student",
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               backgroundColor: Theme.of(context).colorScheme.secondary,
             ),
@@ -438,7 +439,7 @@ class _studentadditionState extends State<studentaddition> {
                             child: Align(
                               alignment: Alignment.center,
                               child: AnimatedButton(
-                                color: Color.fromRGBO(29, 144, 255, 1),
+                                color: Theme.of(context).colorScheme.secondary,
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.5,
@@ -476,8 +477,9 @@ class _studentadditionState extends State<studentaddition> {
                                   // }
                                 },
                                 child: Text("Let's Go! ",
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall),
                               ),
                             ),
                           ),
