@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class sthome extends StatefulWidget {
@@ -62,7 +63,31 @@ class _sthomeState extends State<sthome> {
             ),
             Padding(
               padding: EdgeInsets.all(8),
+              child: Text(
+                "Leaderboard",
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
               child: Container(
+                child: ListView.builder(
+                  itemBuilder: (BuildContext, ccontext) => ListTile(
+                    leading: AutoSizeText(
+                      "[Rank]",
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                    title: AutoSizeText(
+                      "[Name]",
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                    trailing: AutoSizeText(
+                      "[Points]",
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  ),
+                  itemCount: 5,
+                ),
                 height: MediaQuery.of(context).size.height * 0.2,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(

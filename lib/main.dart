@@ -9,6 +9,8 @@ import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
 import 'package:startup/coach/clogin.dart';
 import 'package:startup/coach/coachdashboard.dart';
 import 'package:startup/coach/coachfees.dart';
+import 'package:startup/student/slogin.dart';
+import 'package:startup/student/ssignup.dart';
 import 'package:startup/student/stalerts.dart';
 import 'package:startup/coach/csignup.dart';
 import 'package:startup/coach/cstudentaddition.dart';
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => sthomepage(),
+            '/': (context) => ssignup(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
@@ -102,7 +104,7 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold),
                 titleLarge: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 27,
+                    fontSize: 35,
                     color: Colors.black,
                     fontWeight: FontWeight.bold)),
             colorScheme: ColorScheme.fromSwatch().copyWith(
