@@ -18,7 +18,7 @@ class metricaddition extends StatefulWidget {
 }
 
 class _metricadditionState extends State<metricaddition> {
-  final double _value = 0;
+  double _value = 0;
   final formkey = GlobalKey<FormState>();
   List<String> metrics = [
     "Forehand",
@@ -29,6 +29,7 @@ class _metricadditionState extends State<metricaddition> {
     "Stamina",
     "Reflexes"
   ];
+  List<double> values = [0, 0, 0, 0, 0, 0, 0];
   Map<String, double> imp = {
     "Forehand": 0,
     "Backhand": 0,
@@ -36,7 +37,7 @@ class _metricadditionState extends State<metricaddition> {
     "Flexibility": 0,
     "Services": 0,
     "Stamina": 0,
-    "Reflexes:": 0
+    "Reflexes": 0
   };
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,7 @@ class _metricadditionState extends State<metricaddition> {
           children: [
             Expanded(
               child: ListView.builder(
+                scrollDirection: Axis.vertical,
                 itemBuilder: ((context, index) => Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -70,18 +72,19 @@ class _metricadditionState extends State<metricaddition> {
                               metrics[index],
                               style: Theme.of(context).textTheme.labelSmall,
                             ),
-                            FlutterSlider(
-                              touchSize: 40,
-                              handlerWidth: 25,
-                              values: [0],
-                              onDragging:
-                                  (handlerIndex, lowerValue, upperValue) {
-                                imp[metrics[index]] = lowerValue;
-                                setState(() {});
-                              },
-                              min: 0,
+                            Slider(
+                              divisions: 10,
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
+                              min: 0.0,
                               max: 10,
-                              lockDistance: 1,
+                              value: imp[metrics[index]]!.toDouble(),
+                              label: imp[metrics[index]]!.toDouble().toString(),
+                              onChanged: (value) {
+                                setState(() {
+                                  imp[metrics[index]] = value;
+                                });
+                              },
                             )
                           ],
                         ),
@@ -104,10 +107,4 @@ class _metricadditionState extends State<metricaddition> {
           ],
         ));
   }
-}
-
-class Data {
-  late final DateTime x;
-  final double? y;
-  Data({required this.x, required this.y});
 }
