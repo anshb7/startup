@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/coach/academyreg.dart';
+import 'package:startup/main.dart';
 import 'package:string_validator/string_validator.dart';
 
 class csignin extends StatefulWidget {
@@ -189,7 +191,7 @@ class _csigninState extends State<csignin> {
 
                                               final snackbar = SnackBar(
                                                 content: Text(
-                                                  "Successfully Added!",
+                                                  "Successfully LoggedIn!",
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.white),
@@ -197,6 +199,12 @@ class _csigninState extends State<csignin> {
                                               );
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(snackbar);
+                                              var sp = await SharedPreferences
+                                                  .getInstance();
+                                              sp.setBool(
+                                                  MyHomePageState.coachkey,
+                                                  true);
+
                                               // Navigator.push(
                                               //     context,
                                               //     MaterialPageRoute(

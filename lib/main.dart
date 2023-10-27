@@ -1,11 +1,15 @@
+import 'dart:ffi';
+
 import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/auth/authrepository.dart';
 import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
+import 'package:startup/coach/academyreg.dart';
 import 'package:startup/coach/clogin.dart';
 import 'package:startup/coach/coachdashboard.dart';
 import 'package:startup/coach/coachfees.dart';
@@ -55,7 +59,8 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => ssignup(),
+            '/': (context) => MyHomePage(),
+            '/cdashboard': (context) => cdashboard(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
@@ -123,15 +128,23 @@ class MyHomePage extends StatefulWidget {
   });
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
+  static String coachkey = 'coachlogin';
+  static String coachregkey = 'coachregkey';
   final List<String> imageList = [
     "https://cdn.dribbble.com/users/4643902/screenshots/17759596/media/1873de7f0db5446fe244bd757c7bcd8e.jpg?compress=1&resize=1600x1200&vertical=center",
     "https://img.freepik.com/free-vector/hello-wording-comic-speech-bubble-pop-art-style_1150-39959.jpg?w=2000",
     'https://cdn.dribbble.com/users/1270214/screenshots/6561699/gamification-toms-stals-flat-illustration-phantoms-closeup.png'
   ];
+
+  @override
+  void initState() {
+    loginstate();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: MediaQuery.of(context).size.width * 0.5,
                       shadowDegree: ShadowDegree.dark,
                       onPressed: () {
-                        Navigator.pushNamed(context, 'clogin');
+                        Navigator.pushReplacementNamed(context, 'clogin');
                       },
                       child: AutoSizeText(
                         "Are you a coach?",
@@ -233,5 +246,23 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  Future<void> loginstate() async {
+    var sharedpref = await SharedPreferences.getInstance();
+    var isCoachLoggedIn = sharedpref.getBool(coachkey);
+    var isCoachReg = sharedpref.getBool(coachregkey) ?? false;
+
+    if (isCoachLoggedIn != null) {
+      if (isCoachLoggedIn && isCoachReg == true) {
+        Navigator.pushReplacementNamed(context, '/cdashboard');
+        // ignore: unnecessary_null_comparison
+      } else if (isCoachLoggedIn && isCoachReg == false) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => academyReg()));
+      } else {
+        Navigator.pushReplacementNamed(context, 'clogin');
+      }
+    }
   }
 }

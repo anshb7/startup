@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
 import 'package:startup/coach/coachdashboard.dart';
 import 'package:string_validator/string_validator.dart';
 
+import '../main.dart';
 import '../models/coach.dart';
 
 class academyReg extends StatefulWidget {
@@ -42,7 +44,7 @@ class _academyRegState extends State<academyReg> {
       body: BlocConsumer<CoachdbBloc, CoachdbState>(
         listener: (context, state) {
           if (state is dataSent) {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => cdashboard(),
@@ -340,9 +342,13 @@ class _academyRegState extends State<academyReg> {
                                       width: MediaQuery.of(context).size.width *
                                           0.5,
                                       shadowDegree: ShadowDegree.light,
-                                      onPressed: () {
+                                      onPressed: () async {
                                         formkey.currentState?.save();
                                         _sendcoachdata(context);
+                                        var sp = await SharedPreferences
+                                            .getInstance();
+                                        sp.setBool(
+                                            MyHomePageState.coachregkey, true);
                                       },
                                       child: AutoSizeText(
                                         "Let's go!",
