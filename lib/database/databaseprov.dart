@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:startup/models/coach.dart';
+import 'package:startup/models/student.dart';
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -14,6 +15,9 @@ class DatabaseService {
         .set(userData.toJson());
   }
 
+  addStudentData(studentInfo student, String uid) async {
+    await _db.collection("AllStudents").doc(uid).set(student.toJson());
+  }
   // Future<List<UserModel>> retrieveUserData() async {
   //   QuerySnapshot<Map<String, dynamic>> snapshot =
   //       await _db.collection("Users").get();
