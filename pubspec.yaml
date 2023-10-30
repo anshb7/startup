@@ -53,6 +53,8 @@ dependencies:
   animated_bottom_navigation_bar: ^1.2.0
   flutter_xlider: ^3.5.0
   shared_preferences: ^2.2.2
+  uuid: ^4.1.0
+  nanoid: ^1.0.0
 
 
 dev_dependencies:

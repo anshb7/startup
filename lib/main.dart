@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nanoid/async.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/auth/authrepository.dart';
 import 'package:startup/bloc/auth_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:startup/database/databaseprov.dart';
 import 'package:startup/student/stalerts.dart';
 import 'package:startup/student/sthome.dart';
 import 'package:startup/student/stover.dart';
+import 'package:uuid/uuid.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +66,7 @@ class MyApp extends StatelessWidget {
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
-            '/metric': (context) => metricaddition()
+            //'/metric': (context) => metricaddition()
           },
           theme: ThemeData(
             iconButtonTheme: IconButtonThemeData(

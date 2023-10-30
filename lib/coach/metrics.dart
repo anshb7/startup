@@ -2,16 +2,36 @@
 
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:intl/intl.dart';
+import 'package:nanoid/non_secure.dart';
+import 'package:startup/models/student.dart';
 import 'package:syncfusion_flutter_charts/charts.dart' hide LabelPlacement;
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
+// ignore: must_be_immutable
 class metricaddition extends StatefulWidget {
-  const metricaddition({super.key});
+  String academyId = '';
+  String name = "";
+  double age = 0;
+  String gender = '';
+  String session = '';
+  String parentname = "";
+  double ppNo = 0;
+  metricaddition(
+      {super.key,
+      required this.academyId,
+      required this.name,
+      required this.age,
+      required this.gender,
+      required this.parentname,
+      required this.ppNo,
+      required this.session});
 
   @override
   State<metricaddition> createState() => _metricadditionState();
@@ -97,8 +117,52 @@ class _metricadditionState extends State<metricaddition> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
                 color: Theme.of(context).colorScheme.secondary,
-                onPressed: () {
-                  //Navigator.pushNamed(context, '/')
+                onPressed: () async {
+                  String sID = '${widget.name}' + nanoid(10).toString();
+                  try {
+                    await FirebaseFirestore.instance
+                        .collection("Academies")
+                        .doc(widget.academyId)
+                        .collection("Students")
+                        .doc(sID)
+                        .set(studentInfo(
+                                academyId: '${widget.academyId}',
+                                name: '${widget.name}',
+                                age: widget.age,
+                                gender: widget.gender,
+                                session: widget.session,
+                                parentname: widget.parentname,
+                                ppNo: widget.ppNo,
+                                fh: imp['Forehand']!,
+                                bh: imp['Backhand']!,
+                                ag: imp['Agility']!,
+                                fl: imp['Flexibility']!,
+                                ser: imp['Services']!,
+                                st: imp['Stamina']!,
+                                ref: imp['Reflexes']!)
+                            .toJson());
+                    await FirebaseFirestore.instance
+                        .collection("AllStudents")
+                        .doc(sID)
+                        .set(studentInfo(
+                                academyId: '${widget.academyId}',
+                                name: '${widget.name}',
+                                age: widget.age,
+                                gender: widget.gender,
+                                session: widget.session,
+                                parentname: widget.parentname,
+                                ppNo: widget.ppNo,
+                                fh: imp['Forehand']!,
+                                bh: imp['Backhand']!,
+                                ag: imp['Agility']!,
+                                fl: imp['Flexibility']!,
+                                ser: imp['Services']!,
+                                st: imp['Stamina']!,
+                                ref: imp['Reflexes']!)
+                            .toJson());
+                  } catch (e) {
+                    print(e);
+                  }
                 },
                 child: AutoSizeText(
                   "Submit!",

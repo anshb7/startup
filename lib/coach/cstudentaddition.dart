@@ -1,8 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ffi';
+
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:nanoid/async.dart';
+import 'package:startup/coach/metrics.dart';
 import 'package:string_validator/string_validator.dart';
 
 List<String> listt = <String>['M', 'F'];
@@ -16,9 +23,18 @@ class studentaddition extends StatefulWidget {
 }
 
 class _studentadditionState extends State<studentaddition> {
+  final user = FirebaseAuth.instance.currentUser;
   String dropdownValue = listt.first;
   var dropdownbatchValue = batch.first;
-
+  TextEditingController gendercontroller = new TextEditingController();
+  TextEditingController sessioncontroller = new TextEditingController();
+  var academy = '';
+  String name = "";
+  double age = 0;
+  String gender = '';
+  String session = '';
+  String parentname = "";
+  double ppNo = 0;
   final formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -98,6 +114,7 @@ class _studentadditionState extends State<studentaddition> {
                             },
                             onSaved: (newValue) {
                               setState(() {
+                                name = newValue.toString();
                                 //rpassword.text = newValue.toString();
                               });
                             },
@@ -145,6 +162,7 @@ class _studentadditionState extends State<studentaddition> {
                                   },
                                   onSaved: (newValue) {
                                     setState(() {
+                                      age = double.parse(newValue.toString());
                                       //rpassword.text = newValue.toString();
                                     });
                                   },
@@ -179,6 +197,7 @@ class _studentadditionState extends State<studentaddition> {
                                         // This is called when the user selects an item.
                                         setState(() {
                                           dropdownValue = value!;
+                                          gendercontroller.text = dropdownValue;
                                         });
                                       },
                                       items: listt
@@ -224,6 +243,8 @@ class _studentadditionState extends State<studentaddition> {
                                       // This is called when the user selects an item.
                                       setState(() {
                                         dropdownbatchValue = value!;
+                                        sessioncontroller.text =
+                                            dropdownbatchValue;
                                       });
                                     },
                                     items: batch.map<DropdownMenuItem<String>>(
@@ -281,6 +302,7 @@ class _studentadditionState extends State<studentaddition> {
                             },
                             onSaved: (newValue) {
                               setState(() {
+                                parentname = newValue.toString();
                                 //rpassword.text = newValue.toString();
                               });
                             },
@@ -330,6 +352,7 @@ class _studentadditionState extends State<studentaddition> {
                             },
                             onSaved: (newValue) {
                               setState(() {
+                                ppNo = double.parse(newValue.toString());
                                 //rpassword.text = newValue.toString();
                               });
                             },
@@ -346,38 +369,44 @@ class _studentadditionState extends State<studentaddition> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
                                 width: MediaQuery.of(context).size.width * 0.5,
-                                onPressed: () {
-                                  if (formkey.currentState!.validate()) {
-                                    Navigator.pushNamed(context, '/metric');
-                                  }
-                                  // final isValid =
-                                  //     formkey.currentState?.validate();
-                                  // if (isValid!) {
-                                  //   formkey.currentState?.save();
+                                onPressed: () async {
+                                  formkey.currentState?.save();
 
-                                  //   try {
-                                  //     await _signupWithEmailAndPassword(
-                                  //         context);
-                                  //     // createuser();
-                                  //     final snackbar = SnackBar(
-                                  //       content: Text(
-                                  //         "Successfully Added!",
-                                  //         style: TextStyle(
-                                  //             fontSize: 15,
-                                  //             color: Colors.white),
-                                  //       ),
-                                  //     );
-                                  //     ScaffoldMessenger.of(context)
-                                  //         .showSnackBar(snackbar);
-                                  //     // Navigator.push(
-                                  //     //     context,
-                                  //     //     MaterialPageRoute(
-                                  //     //         builder: ((context) =>
-                                  //     //             coachDashboard())));
-                                  //   } catch (e) {
-                                  //     print(e);
-                                  //   }
-                                  // }
+                                  if (formkey.currentState!.validate()) {
+                                    var academyName = await FirebaseFirestore
+                                        .instance
+                                        .collection('Coaches')
+                                        .doc(user!.uid.toString())
+                                        .get();
+                                    if (academyName.exists) {
+                                      setState(() {
+                                        academy =
+                                            academyName.data()!['academyName'] +
+                                                '${nanoid(10)}';
+                                        print(academy);
+                                      });
+                                    }
+                                    print(academy);
+                                    print(name);
+                                    print(gendercontroller.text);
+                                    print(parentname);
+                                    print(ppNo);
+                                    print(sessioncontroller.text);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                metricaddition(
+                                                    academyId: academy,
+                                                    name: name,
+                                                    age: age,
+                                                    gender:
+                                                        gendercontroller.text,
+                                                    parentname: parentname,
+                                                    ppNo: ppNo,
+                                                    session: sessioncontroller
+                                                        .text)));
+                                  }
                                 },
                                 child: Text("Let's Go! ",
                                     style: Theme.of(context)
