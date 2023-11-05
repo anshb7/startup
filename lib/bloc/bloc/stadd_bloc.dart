@@ -8,8 +8,8 @@ part 'stadd_state.dart';
 
 class StaddBloc extends Bloc<StaddEvent, StaddState> {
   final DatabaseService databaseService;
-  String uid;
-  StaddBloc(this.databaseService, this.uid) : super(StaddInitial()) {
+
+  StaddBloc({required this.databaseService}) : super(StaddInitial()) {
     on<sendstdata>((event, emit) async {
       emit(Loading());
       try {
@@ -29,7 +29,25 @@ class StaddBloc extends Bloc<StaddEvent, StaddState> {
                 ser: event.ser,
                 st: event.st,
                 ref: event.ref),
-            uid);
+            event.uid);
+        await databaseService.addinacademies(
+            studentInfo(
+                academyId: event.academyId,
+                name: event.name,
+                age: event.age,
+                gender: event.gender,
+                session: event.session,
+                parentname: event.parentname,
+                ppNo: event.ppNo,
+                fh: event.fh,
+                bh: event.bh,
+                ag: event.ag,
+                fl: event.fl,
+                ser: event.ser,
+                st: event.st,
+                ref: event.ref),
+            event.uid,
+            event.academyId);
         emit(sentstdata());
       } catch (e) {
         emit(DatabaseError());

@@ -7,8 +7,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nanoid/async.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startup/animation.dart';
 import 'package:startup/auth/authrepository.dart';
 import 'package:startup/bloc/auth_bloc.dart';
+import 'package:startup/bloc/bloc/stadd_bloc.dart';
 import 'package:startup/bloc/coachdb/bloc/coachdb_bloc.dart';
 import 'package:startup/coach/academyreg.dart';
 import 'package:startup/coach/clogin.dart';
@@ -49,6 +51,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => StaddBloc(
+                databaseService:
+                    RepositoryProvider.of<DatabaseService>(context)),
+          ),
           BlocProvider(
             create: (context) => AuthBloc(
                 authRepository: RepositoryProvider.of<AuthRepository>(context)),
@@ -111,11 +118,11 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold),
                 titleLarge: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 35,
+                    fontSize: 22,
                     color: Colors.black,
                     fontWeight: FontWeight.bold)),
             colorScheme: ColorScheme.fromSwatch().copyWith(
-                secondary: Color.fromRGBO(0, 218, 198, 1),
+                secondary: Color.fromRGBO(111, 238, 200, 1),
                 primary: Color.fromRGBO(26, 26, 26, 1)),
           ),
         ),

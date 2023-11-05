@@ -381,8 +381,7 @@ class _studentadditionState extends State<studentaddition> {
                                     if (academyName.exists) {
                                       setState(() {
                                         academy =
-                                            academyName.data()!['academyName'] +
-                                                '${nanoid(10)}';
+                                            academyName.data()!['academyName'];
                                         print(academy);
                                       });
                                     }

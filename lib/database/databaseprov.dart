@@ -18,6 +18,15 @@ class DatabaseService {
   addStudentData(studentInfo student, String uid) async {
     await _db.collection("AllStudents").doc(uid).set(student.toJson());
   }
+
+  addinacademies(studentInfo student, String sid, String academyname) async {
+    await _db
+        .collection("Academies")
+        .doc(academyname)
+        .collection("Students")
+        .doc(sid)
+        .set(student.toJson());
+  }
   // Future<List<UserModel>> retrieveUserData() async {
   //   QuerySnapshot<Map<String, dynamic>> snapshot =
   //       await _db.collection("Users").get();

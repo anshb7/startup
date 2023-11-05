@@ -23,23 +23,24 @@ class sendstdata extends StaddEvent {
   double ser = 0;
   double st = 0;
   double ref = 0;
+  String uid = '';
 
-  sendstdata({
-    required this.academyId,
-    required this.name,
-    required this.age,
-    required this.gender,
-    required this.session,
-    required this.parentname,
-    required this.ppNo,
-    required this.fh,
-    required this.bh,
-    required this.ag,
-    required this.fl,
-    required this.ser,
-    required this.st,
-    required this.ref,
-  });
+  sendstdata(
+      {required this.academyId,
+      required this.name,
+      required this.age,
+      required this.gender,
+      required this.session,
+      required this.parentname,
+      required this.ppNo,
+      required this.fh,
+      required this.bh,
+      required this.ag,
+      required this.fl,
+      required this.ser,
+      required this.st,
+      required this.ref,
+      required this.uid});
   List<Object> get props => [
         academyId,
         name,
@@ -54,6 +55,7 @@ class sendstdata extends StaddEvent {
         fl,
         ser,
         st,
-        ref
+        ref,
+        uid,
       ];
 }
