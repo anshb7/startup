@@ -259,9 +259,11 @@ class MyHomePageState extends State<MyHomePage> {
 
   Future<void> loginstate() async {
     var sharedpref = await SharedPreferences.getInstance();
+    print(sharedpref);
     var isCoachLoggedIn = sharedpref.getBool(coachkey);
+    print(isCoachLoggedIn);
     var isCoachReg = sharedpref.getBool(coachregkey) ?? false;
-
+    //print(isCoachReg);
     if (isCoachLoggedIn != null) {
       if (isCoachLoggedIn && isCoachReg == true) {
         Navigator.pushReplacementNamed(context, '/cdashboard');
@@ -270,7 +272,7 @@ class MyHomePageState extends State<MyHomePage> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => academyReg()));
       } else {
-        Navigator.pushReplacementNamed(context, 'clogin');
+        //Navigator.pushNamed(context, '/');
       }
     }
   }
