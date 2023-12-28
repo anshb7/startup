@@ -12,8 +12,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(Loading());
       try {
         await authRepository.signIn(
-            email: event.email, password: event.password);
-        emit(Authenticated());
+            email: event.email, password: event.password, flag: event.flag);
+        if (event.flag == true) {
+          emit(Authenticated());
+        } else {
+          emit(unAuthenticated());
+        }
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(unAuthenticated());
@@ -24,7 +28,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       try {
         await authRepository.signUp(
-            email: event.email, password: event.password);
+            email: event.email, password: event.password, flag: event.flag);
+        if (event.flag == true) {
+          emit(Authenticated());
+        }
       } catch (e) {
         throw Exception(unAuthenticated);
       }

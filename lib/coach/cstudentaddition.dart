@@ -41,6 +41,7 @@ class _studentadditionState extends State<studentaddition> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
         body: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           shrinkWrap: true,
           slivers: [
             SliverAppBar.large(
@@ -57,8 +58,7 @@ class _studentadditionState extends State<studentaddition> {
                   key: formkey,
                   child: Padding(
                     padding: const EdgeInsets.all(0.0),
-                    child: ListView(
-                      shrinkWrap: true,
+                    child: Column(
                       children: [
                         Align(
                           alignment: Alignment.center,
@@ -74,6 +74,8 @@ class _studentadditionState extends State<studentaddition> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 30),
                           child: TextFormField(
+                            showCursor: true,
+                            cursorColor: Colors.white,
                             style: TextStyle(
                                 fontFamily: "Nexa", color: Colors.white),
                             autocorrect: true,
@@ -128,6 +130,8 @@ class _studentadditionState extends State<studentaddition> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.50,
                                 child: TextFormField(
+                                  showCursor: true,
+                                  cursorColor: Colors.white,
                                   style: TextStyle(
                                       fontFamily: "Nexa", color: Colors.white),
                                   autocorrect: true,
@@ -217,7 +221,7 @@ class _studentadditionState extends State<studentaddition> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 30),
                           child: Container(
-                            width: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width * 0.9,
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             decoration: BoxDecoration(
                                 border: Border.all(
@@ -262,6 +266,8 @@ class _studentadditionState extends State<studentaddition> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 30),
                           child: TextFormField(
+                            showCursor: true,
+                            cursorColor: Colors.white,
                             style: TextStyle(
                                 fontFamily: "Nexa", color: Colors.white),
                             autocorrect: true,
@@ -312,6 +318,8 @@ class _studentadditionState extends State<studentaddition> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 30),
                           child: TextFormField(
+                            showCursor: true,
+                            cursorColor: Colors.white,
                             style: TextStyle(
                                 fontFamily: "Nexa", color: Colors.white),
                             autocorrect: true,

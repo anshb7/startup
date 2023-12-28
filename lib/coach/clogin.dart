@@ -24,9 +24,10 @@ class _csigninState extends State<csignin> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           elevation: 0,
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
           if (state is Authenticated) {
             Navigator.pushReplacement(
@@ -64,7 +65,7 @@ class _csigninState extends State<csignin> {
                   padding: const EdgeInsets.all(8.0),
                   child: AutoSizeText(
                     "Let's get this started",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
                 SizedBox(
@@ -199,11 +200,11 @@ class _csigninState extends State<csignin> {
                                               );
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(snackbar);
-                                              var sp = await SharedPreferences
-                                                  .getInstance();
-                                              sp.setBool(
-                                                  MyHomePageState.coachkey,
-                                                  true);
+                                              // var sp = await SharedPreferences
+                                              //     .getInstance();
+                                              // sp.setBool(
+                                              //     MyHomePageState.coachkey,
+                                              //     true);
 
                                               // Navigator.push(
                                               //     context,
@@ -239,7 +240,7 @@ class _csigninState extends State<csignin> {
   Future<void> _authenticateWithEmailAndPassword(context) async {
     if (formkey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        signInRequested(email.text, password.text),
+        signInRequested(email.text, password.text, false),
       );
     }
   }

@@ -10,14 +10,16 @@ abstract class AuthEvent extends Equatable {
 class signUpRequested extends AuthEvent {
   final String email;
   final String password;
-  signUpRequested(this.email, this.password);
+  final bool flag;
+  signUpRequested(this.email, this.password, this.flag);
 }
 
 class signInRequested extends AuthEvent {
   final String email;
   final String password;
+  final bool flag;
 
-  signInRequested(this.email, this.password);
+  signInRequested(this.email, this.password, this.flag);
 }
 
 class SignOutRequested extends AuthEvent {}

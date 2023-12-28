@@ -17,7 +17,12 @@ class _sthomeState extends State<sthome> {
         slivers: [
           SliverAppBar.large(
             actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.person_2_rounded))
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.person_2_rounded,
+                    color: Colors.black,
+                  ))
             ],
             title: Text(
               "Hello,Ansh!",
@@ -88,7 +93,7 @@ class _sthomeState extends State<sthome> {
                   ),
                   itemCount: 5,
                 ),
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(62, 62, 66, 1),

@@ -27,12 +27,14 @@ import 'package:startup/database/databaseprov.dart';
 import 'package:startup/student/stalerts.dart';
 import 'package:startup/student/sthome.dart';
 import 'package:startup/student/stover.dart';
+import 'package:startup/student/studentprofile.dart';
 import 'package:uuid/uuid.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
+      
       providers: [
         RepositoryProvider(
           create: (context) => AuthRepository(),
@@ -50,6 +53,8 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MultiBlocProvider(
+        
+        
         providers: [
           BlocProvider(
             create: (context) => StaddBloc(
@@ -89,7 +94,7 @@ class MyApp extends StatelessWidget {
                 headlineLarge: TextStyle(
                   fontFamily: "Nexa",
                   fontSize: 35,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 labelSmall: TextStyle(
                   fontFamily: "Nexa",
@@ -113,7 +118,7 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.w400),
                 titleSmall: TextStyle(
                     fontFamily: "Nexa",
-                    fontSize: 20,
+                    fontSize: 23,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
                 titleLarge: TextStyle(
@@ -182,11 +187,16 @@ class MyHomePageState extends State<MyHomePage> {
               ),
             ),
             FittedBox(
-              fit: BoxFit.contain,
+            
+              fit: BoxFit.,
               child: AutoSizeText(
                 "Train.Dream.Achieve.",
                 minFontSize: 15,
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: TextStyle(
+                  fontFamily: "Nexa",
+                  fontSize: 35,
+                  color: Colors.white,
+                ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
@@ -242,7 +252,7 @@ class MyHomePageState extends State<MyHomePage> {
                       width: MediaQuery.of(context).size.width * 0.5,
                       shadowDegree: ShadowDegree.dark,
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, 'clogin');
+                        Navigator.pushNamed(context, 'clogin');
                       },
                       child: AutoSizeText(
                         "Are you a coach?",

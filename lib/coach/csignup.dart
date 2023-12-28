@@ -263,7 +263,7 @@ class _cloginState extends State<clogin> {
   Future<void> _signupWithEmailAndPassword(context) async {
     if (formkey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        signUpRequested(email.text, password.text),
+        signUpRequested(email.text, password.text, false),
       );
     }
   }

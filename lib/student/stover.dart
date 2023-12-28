@@ -25,12 +25,11 @@ class _sthomepageState extends State<sthomepage> {
           activeColor: Colors.white,
           inactiveColor: Colors.grey,
           backgroundColor: Theme.of(context).colorScheme.primary,
-          icons: [Icons.home, Icons.analytics, Icons.notification_important],
+          icons: [Icons.home, Icons.analytics, Icons.notifications],
           activeIndex: _bottomNavIndex,
-          gapLocation: GapLocation.center,
+
           notchSmoothness: NotchSmoothness.verySmoothEdge,
-          leftCornerRadius: 32,
-          rightCornerRadius: 32,
+          gapLocation: GapLocation.none,
           onTap: (index) => setState(() => _bottomNavIndex = index),
           //other params
         ),

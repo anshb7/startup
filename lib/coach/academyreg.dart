@@ -38,9 +38,10 @@ class _academyRegState extends State<academyReg> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         elevation: 0,
       ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: BlocConsumer<CoachdbBloc, CoachdbState>(
         listener: (context, state) {
           if (state is dataSent) {
