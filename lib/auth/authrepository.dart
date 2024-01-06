@@ -1,17 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:startup/usermodel.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
-  Future<void> signUp(
-      {required String email,
-      required String password,
-      required bool flag}) async {
+  Future<UserModel?> signUp({
+    required String email,
+    required String password,
+  }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      flag = true;
+      UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      User? fuser = userCredential.user;
+      if (fuser != null) {
+        return UserModel(email: fuser.email, id: fuser.uid);
+      }
     } on FirebaseAuthException catch (e) {
-      flag = false;
       if (e.code == 'weak_password') {
         throw Exception('Your password is too weak');
       }
@@ -21,27 +24,34 @@ class AuthRepository {
     } catch (e) {
       throw Exception(e.toString());
     }
+    return null;
   }
 
-  Future<void> signIn(
-      {required String email,
-      required String password,
-      required bool flag}) async {
+  Future<UserModel?> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      flag = true;
+      UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+      User? fuser = userCredential.user;
+      if (fuser != null) {
+        return UserModel(email: fuser.email, id: fuser.uid);
+      }
     } on FirebaseAuthException catch (e) {
-      flag = false;
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
     }
+    return null;
   }
 
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      await _firebaseAuth.signOut();
+    }
   }
 }

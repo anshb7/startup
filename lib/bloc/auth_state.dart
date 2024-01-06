@@ -1,30 +1,32 @@
 part of 'auth_bloc.dart';
 
-abstract class AuthState extends Equatable {
-  const AuthState();
-}
+abstract class AuthenticationState {
+  const AuthenticationState();
 
-class Loading extends AuthState {
-  @override
   List<Object> get props => [];
 }
 
-class Authenticated extends AuthState {
-  @override
-  List<Object?> get props => [];
+class AuthenticationInitialState extends AuthenticationState {}
+
+class AuthenticationLoadingState extends AuthenticationState {
+  final bool isLoading;
+
+  AuthenticationLoadingState({required this.isLoading});
 }
 
-// This is the initial state of the bloc. When the user is not authenticated the state is changed to Unauthenticated.
-class unAuthenticated extends AuthState {
+class AuthenticationSuccessState extends AuthenticationState {
+  final UserModel user;
+
+  const AuthenticationSuccessState(this.user);
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [user];
 }
 
-// If any error occurs the state is changed to AuthError.
-class AuthError extends AuthState {
-  final String error;
+class AuthenticationFailureState extends AuthenticationState {
+  final String errorMessage;
 
-  AuthError(this.error);
+  const AuthenticationFailureState(this.errorMessage);
+
   @override
-  List<Object?> get props => [error];
+  List<Object> get props => [errorMessage];
 }

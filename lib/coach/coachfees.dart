@@ -26,7 +26,7 @@ class _cfeesState extends State<cfees> {
                       style: TextStyle(
                         fontFamily: "Nexa",
                         fontSize: 14,
-                        color: Color.fromRGBO(255, 255, 255, 1),
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -36,7 +36,7 @@ class _cfeesState extends State<cfees> {
                       style: TextStyle(
                         fontFamily: "Nexa",
                         fontSize: 14,
-                        color: Color.fromRGBO(255, 255, 255, 1),
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -126,17 +126,6 @@ class _cfeesState extends State<cfees> {
                           controller.openView();
                         },
                         leading: const Icon(Icons.search),
-                        trailing: <Widget>[
-                          Tooltip(
-                            message: 'Change brightness mode',
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.wb_sunny_outlined),
-                              selectedIcon:
-                                  const Icon(Icons.brightness_2_outlined),
-                            ),
-                          )
-                        ],
                       );
                     }, suggestionsBuilder:
                         (BuildContext context, SearchController controller) {
@@ -156,33 +145,39 @@ class _cfeesState extends State<cfees> {
                   Expanded(
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemBuilder: ((context, index) => GFListTile(
-                          radius: 20,
-                          avatar: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
-                          enabled: true,
-                          shadow: BoxShadow(
-                              color: Colors.white,
-                              offset: Offset.infinite,
-                              spreadRadius: 50),
-                          color: Color.fromRGBO(62, 62, 66, 1),
-                          title: Text(
-                            "Mr.Chandalia",
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          subTitle: Text(
-                            " Rs 2000",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          description: Text(
-                            "Date Credited : [Date]",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.height * 0.020),
-                          margin: EdgeInsets.all(5))),
+                      itemBuilder: ((context, index) => Container(
+                            height: MediaQuery.of(context).size.height * 0.14,
+                            width: double.infinity,
+                            child: GFListTile(
+                                radius: 20,
+                                avatar: CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
+                                enabled: true,
+                                shadow: BoxShadow(
+                                    color: Colors.white,
+                                    offset: Offset.infinite,
+                                    spreadRadius: 30),
+                                color: Color.fromRGBO(62, 62, 66, 1),
+                                title: Text(
+                                  "Mr.Chandalia",
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                subTitle: Text(
+                                  " Rs 2000",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                description: Text(
+                                  "Date Credited : [Date]",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.height * 0.020),
+                                margin: EdgeInsets.all(5)),
+                          )),
                       itemCount: 5,
                     ),
                   )
@@ -264,17 +259,6 @@ class _cfeesState extends State<cfees> {
                           controller.openView();
                         },
                         leading: const Icon(Icons.search),
-                        trailing: <Widget>[
-                          Tooltip(
-                            message: 'Change brightness mode',
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.wb_sunny_outlined),
-                              selectedIcon:
-                                  const Icon(Icons.brightness_2_outlined),
-                            ),
-                          )
-                        ],
                       );
                     }, suggestionsBuilder:
                         (BuildContext context, SearchController controller) {
@@ -294,33 +278,39 @@ class _cfeesState extends State<cfees> {
                   Expanded(
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemBuilder: ((context, index) => GFListTile(
-                          radius: 20,
-                          avatar: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
-                          enabled: true,
-                          shadow: BoxShadow(
-                              color: Colors.white,
-                              offset: Offset.infinite,
-                              spreadRadius: 50),
-                          color: Color.fromRGBO(62, 62, 66, 1),
-                          title: Text(
-                            "Mr.Chandalia",
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          subTitle: Text(
-                            " Rs 2000",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          description: Text(
-                            "Date Credited : [Date]",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.height * 0.020),
-                          margin: EdgeInsets.all(5))),
+                      itemBuilder: ((context, index) => Container(
+                            height: MediaQuery.of(context).size.height * 0.14,
+                            width: double.infinity,
+                            child: GFListTile(
+                                radius: 20,
+                                avatar: CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
+                                enabled: true,
+                                shadow: BoxShadow(
+                                    color: Colors.white,
+                                    offset: Offset.infinite,
+                                    spreadRadius: 30),
+                                color: Color.fromRGBO(62, 62, 66, 1),
+                                title: Text(
+                                  "Mr.Chandalia",
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                subTitle: Text(
+                                  " Rs 2000",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                description: Text(
+                                  "Date Credited : [Date]",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.height * 0.020),
+                                margin: EdgeInsets.all(5)),
+                          )),
                       itemCount: 5,
                     ),
                   )

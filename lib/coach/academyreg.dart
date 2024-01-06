@@ -83,7 +83,7 @@ class _academyRegState extends State<academyReg> {
                 padding: const EdgeInsets.all(8.0),
                 child: AutoSizeText(
                   "Rock and Roll 🚀",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
               SizedBox(
@@ -137,6 +137,9 @@ class _academyRegState extends State<academyReg> {
                                     },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Name",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -174,6 +177,9 @@ class _academyRegState extends State<academyReg> {
                                     // },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Age",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -204,6 +210,9 @@ class _academyRegState extends State<academyReg> {
                                     //
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter PhoneNo",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -242,6 +251,9 @@ class _academyRegState extends State<academyReg> {
                                     },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Academy Name",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -279,6 +291,9 @@ class _academyRegState extends State<academyReg> {
                                     // },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Sport Name",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -308,6 +323,9 @@ class _academyRegState extends State<academyReg> {
                                         color: Colors.black),
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
                                         labelText: "Enter Years of Experience",
@@ -348,8 +366,7 @@ class _academyRegState extends State<academyReg> {
                                         _sendcoachdata(context);
                                         var sp = await SharedPreferences
                                             .getInstance();
-                                        sp.setBool(
-                                            MyHomePageState.coachregkey, true);
+                                        sp.setBool("isRegistered", true);
                                       },
                                       child: AutoSizeText(
                                         "Let's go!",

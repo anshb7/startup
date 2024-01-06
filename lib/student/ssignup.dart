@@ -19,6 +19,14 @@ class _ssignupState extends State<ssignup> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController rpassword = TextEditingController();
+  Future<void> _signupWithEmailAndPassword(context) async {
+    if (formkey.currentState!.validate()) {
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        SignUpUser(email.text, password.text),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,22 +35,23 @@ class _ssignupState extends State<ssignup> {
           backgroundColor: Theme.of(context).colorScheme.secondary,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
-          if (state is Authenticated) {
+        body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+          if (state is AuthenticationSuccessState) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => slogin()));
           }
-          if (state is AuthError) {
+          if (state is AuthenticationFailureState) {
             // Displaying the error message if the user is not authenticated
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+                .showSnackBar(SnackBar(content: Text("Not Authenticated")));
           }
         }, builder: (context, state) {
-          if (state is Loading) {
+          if (state is AuthenticationLoadingState) {
             // Displaying the loading indicator while the user is signing up
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is unAuthenticated) {
+          if (state is AuthenticationInitialState) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +62,8 @@ class _ssignupState extends State<ssignup> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AutoSizeText(
-                    "The Dreamer",
-                    style: Theme.of(context).textTheme.titleLarge,
+                    "The Dreamer.",
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
                 Padding(
@@ -116,6 +125,9 @@ class _ssignupState extends State<ssignup> {
                                     },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Email",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -141,6 +153,9 @@ class _ssignupState extends State<ssignup> {
                                         color: Colors.black),
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
                                         labelText: "Enter password",
@@ -172,6 +187,9 @@ class _ssignupState extends State<ssignup> {
                                         color: Colors.black),
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
                                         labelText: " Re Enter password ",

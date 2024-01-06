@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/coach/academyreg.dart';
+import 'package:startup/coach/coachdashboard.dart';
 import 'package:startup/main.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -17,6 +18,8 @@ class csignin extends StatefulWidget {
 
 class _csigninState extends State<csignin> {
   final formkey = GlobalKey<FormState>();
+  bool loggedIn = false;
+  bool registered = false;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController rpassword = TextEditingController();
@@ -28,25 +31,33 @@ class _csigninState extends State<csignin> {
           elevation: 0,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
-          if (state is Authenticated) {
+        body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+          if (state is AuthenticationSuccessState &&
+              registered == true &&
+              loggedIn == true) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => cdashboard()));
+          }
+          if (state is AuthenticationSuccessState && registered == false) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => academyReg()));
           }
-          if (state is AuthError) {
+          if (state is AuthenticationFailureState) {
             // Displaying the error message if the user is not authenticated
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content:
+                    Text(AuthenticationFailureState("Hello").errorMessage)));
           }
         }, builder: (context, state) {
-          if (state is Loading) {
+          if (state is AuthenticationLoadingState) {
             // Displaying the loading indicator while the user is signing up
             return const Center(
                 child: CircularProgressIndicator(
               color: Colors.white,
             ));
           }
-          if (state is unAuthenticated) {
+          if (state is AuthenticationInitialState) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,6 +131,9 @@ class _csigninState extends State<csignin> {
                                     },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Email",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -145,6 +159,9 @@ class _csigninState extends State<csignin> {
                                         color: Colors.black),
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
                                         labelText: "Enter password",
@@ -164,6 +181,31 @@ class _csigninState extends State<csignin> {
                                         password.text = newValue.toString();
                                       });
                                     },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      AutoSizeText(
+                                        "New Coach?",
+                                        style: TextStyle(
+                                            fontFamily: "Nexa", fontSize: 15),
+                                      ),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, 'csignup');
+                                          },
+                                          child: AutoSizeText(
+                                            "Sign Up Now!",
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontFamily: "Nexa",
+                                                fontSize: 15),
+                                          ))
+                                    ],
                                   ),
                                 ),
                                 Padding(
@@ -187,24 +229,11 @@ class _csigninState extends State<csignin> {
                                             formkey.currentState?.save();
 
                                             try {
+                                              var sp = await SharedPreferences
+                                                  .getInstance();
+                                              sp.setBool("isLoggedIn", true);
                                               await _authenticateWithEmailAndPassword(
                                                   context);
-
-                                              final snackbar = SnackBar(
-                                                content: Text(
-                                                  "Successfully LoggedIn!",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white),
-                                                ),
-                                              );
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackbar);
-                                              // var sp = await SharedPreferences
-                                              //     .getInstance();
-                                              // sp.setBool(
-                                              //     MyHomePageState.coachkey,
-                                              //     true);
 
                                               // Navigator.push(
                                               //     context,
@@ -239,9 +268,12 @@ class _csigninState extends State<csignin> {
 
   Future<void> _authenticateWithEmailAndPassword(context) async {
     if (formkey.currentState!.validate()) {
-      BlocProvider.of<AuthBloc>(context).add(
-        signInRequested(email.text, password.text, false),
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        SignInUser(email.text, password.text),
       );
     }
+    var prefs = await SharedPreferences.getInstance();
+    loggedIn = prefs.getBool("isLoggedIn") ?? false;
+    registered = prefs.getBool("isRegistered") ?? false;
   }
 }

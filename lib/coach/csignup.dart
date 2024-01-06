@@ -24,24 +24,26 @@ class _cloginState extends State<clogin> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
+          backgroundColor: Colors.transparent,
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        body: BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
-          if (state is Authenticated) {
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+          if (state is AuthenticationSuccessState) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => academyReg()));
           }
-          if (state is AuthError) {
+          if (state is AuthenticationFailureState) {
             // Displaying the error message if the user is not authenticated
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Please Try Again!,User Not Authentcated")));
           }
         }, builder: (context, state) {
-          if (state is Loading) {
+          if (state is AuthenticationLoadingState) {
             // Displaying the loading indicator while the user is signing up
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is unAuthenticated) {
+          if (state is AuthenticationInitialState) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +62,7 @@ class _cloginState extends State<clogin> {
                   padding: const EdgeInsets.all(8.0),
                   child: AutoSizeText(
                     "Create your account",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
                 SizedBox(
@@ -115,6 +117,9 @@ class _cloginState extends State<clogin> {
                                     },
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelText: "Enter Email",
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
@@ -140,6 +145,9 @@ class _cloginState extends State<clogin> {
                                         color: Colors.black),
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
                                         labelText: "Enter password",
@@ -171,6 +179,9 @@ class _cloginState extends State<clogin> {
                                         color: Colors.black),
                                     autocorrect: true,
                                     decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         labelStyle:
                                             TextStyle(fontFamily: "Nexa"),
                                         labelText: " Re Enter password ",
@@ -262,8 +273,8 @@ class _cloginState extends State<clogin> {
 
   Future<void> _signupWithEmailAndPassword(context) async {
     if (formkey.currentState!.validate()) {
-      BlocProvider.of<AuthBloc>(context).add(
-        signUpRequested(email.text, password.text, false),
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        SignUpUser(email.text, password.text),
       );
     }
   }
