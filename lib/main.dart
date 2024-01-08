@@ -1,8 +1,11 @@
 // ignore_for_file: unused_import
 
+import 'dart:developer';
 import 'dart:ffi';
 import 'package:animated_button/animated_button.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +38,7 @@ import 'package:uuid/uuid.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  _MyAppState().initNotif();
   runApp(MyApp());
 }
 
@@ -46,6 +50,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var _firebasemessaging = FirebaseMessaging.instance;
+  Future<void> initNotif() async {
+    await _firebasemessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    final fcmtoken = await _firebasemessaging.getToken();
+    print('$fcmtoken');
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -79,7 +99,8 @@ class _MyAppState extends State<MyApp> {
             'clogin': (context) => csignin(),
             '/studentaddition': (context) => studentaddition(),
             '/slogin': (context) => slogin(),
-            '/ssignup': (context) => ssignup()
+            '/ssignup': (context) => ssignup(),
+            '/stprofile': (context) => stprofile()
             //'/metric': (context) => metricaddition()
           },
           theme: ThemeData(

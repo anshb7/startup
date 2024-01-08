@@ -44,8 +44,13 @@ class _stprofileState extends State<stprofile> {
                   top: 50,
                   child: IconButton(
                       color: Colors.white,
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_back_ios_new))),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                      ))),
               Positioned(
                   top: MediaQuery.sizeOf(context).height * 0.35,
                   child: Container(

@@ -18,7 +18,9 @@ class _sthomeState extends State<sthome> {
           SliverAppBar.large(
             actions: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/stprofile");
+                  },
                   icon: Icon(
                     Icons.person_2_rounded,
                     color: Colors.black,
