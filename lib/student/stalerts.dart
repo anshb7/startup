@@ -73,7 +73,7 @@ class _stalertState extends State<stalert> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: AutoSizeText(
-              "Reminders",
+              "Payment Reminders",
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),

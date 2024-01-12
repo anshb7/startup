@@ -38,7 +38,10 @@ import 'package:uuid/uuid.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  _MyAppState().initNotif();
+  await Future.delayed(Duration(seconds: 5));
+  // ignore: unused_local_variable
+  String? apsntoken = await FirebaseMessaging.instance.getAPNSToken();
+
   runApp(MyApp());
 }
 
@@ -50,21 +53,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _firebasemessaging = FirebaseMessaging.instance;
-  Future<void> initNotif() async {
-    await _firebasemessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    final fcmtoken = await _firebasemessaging.getToken();
-    print('$fcmtoken');
-  }
-
   @override
   @override
   Widget build(BuildContext context) {
@@ -93,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         ],
         child: MaterialApp(
           routes: {
-            '/': (context) => MyHomePage(),
+            '/': (context) => cfees(),
             '/cdashboard': (context) => cdashboard(),
             'csignup': (context) => clogin(),
             'clogin': (context) => csignin(),
@@ -169,6 +157,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  var _firebasemessaging = FirebaseMessaging.instance;
+
   bool isLoggedIn = false;
   bool isUidRegistered = false;
   bool isRegistered = false;
@@ -182,8 +172,24 @@ class MyHomePageState extends State<MyHomePage> {
     //print(isCoachReg);
   }
 
+  Future<void> initNotif() async {
+    await _firebasemessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    final fcmtoken = await _firebasemessaging.getToken();
+    print('$fcmtoken');
+  }
+
   void initState() {
     loginstate();
+    initNotif();
     super.initState();
   }
 
