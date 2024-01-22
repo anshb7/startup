@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/bloc/auth_bloc.dart';
 import 'package:startup/coach/coachfees.dart';
 import 'package:startup/main.dart';
+import 'package:startup/services/notificationservices.dart';
 import 'package:startup/student/barchart.dart';
 import 'package:startup/student/piechart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -25,6 +26,17 @@ class cdashboard extends StatefulWidget {
 }
 
 class _cdashboardState extends State<cdashboard> {
+  NotificationServices notificationServices = NotificationServices();
+  @override
+  void initState() {
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+
+    notificationServices.isTokenRefresh();
+    super.initState();
+  }
+
   var screens = [cdash(), cfees()];
   var _bottomNavIndex = 0;
   @override

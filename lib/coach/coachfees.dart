@@ -16,32 +16,11 @@ class cfees extends StatefulWidget {
 class _cfeesState extends State<cfees> {
   User? userr = FirebaseAuth.instance.currentUser;
   final TextEditingController _controller = TextEditingController();
-  // ignore: prefer_typing_uninitialized_variables
-  bool areDues = false;
-  Future<void> fetchdues() async {
-    await FirebaseFirestore.instance
-        .collection(userr!.uid.toString())
-        .doc()
-        .collection("payments")
-        .get()
-        .then((value) {
-      if (value.docs.isEmpty) {
-        return areDues = false;
-      } else {
-        return areDues = true;
-      }
-    });
-  }
-
-  void initState() {
-    fetchdues();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        initialIndex: 1,
+        initialIndex: 0,
         length: 2,
         child: Scaffold(
             appBar: AppBar(
@@ -139,41 +118,42 @@ class _cfeesState extends State<cfees> {
                       ),
                     ),
                   ),
-                  areDues
-                      ? Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: ((context, index) => Container()),
-                            itemCount: 5,
-                          ),
-                        )
-                      : Center(
-                          child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.18,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AutoSizeText(
-                                """No dues to show!If you want dues to show remind some people first.""",
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("Coaches")
+                            .doc(userr!.uid.toString())
+                            .collection("payments")
+                            .where("isDue", isEqualTo: 1)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (!snapshot.hasData) {
+                            return Center(
+                              child: Text(
+                                "No dues to show!",
                                 style: Theme.of(context).textTheme.labelSmall,
                               ),
-                            ),
-                            AnimatedButton(
-                                width:
-                                    MediaQuery.of(context).size.height * 0.13,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                onPressed: () {},
-                                child: Text(
-                                  "Remind",
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                ))
-                          ],
-                        ))
+                            );
+                          } else {
+                            final userdata = snapshot.data!.docs;
+                            return ListView.builder(
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(top: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 14),
+                                  height: 300,
+                                  color: Colors.amber,
+                                );
+                              },
+                              itemCount: userdata.length,
+                            );
+                          }
+                        }),
+                  ),
                 ],
               ),
               Column(
