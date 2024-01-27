@@ -3,11 +3,11 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startup/bloc/auth_bloc.dart';
@@ -17,6 +17,7 @@ import 'package:startup/services/notificationservices.dart';
 import 'package:startup/student/barchart.dart';
 import 'package:startup/student/piechart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:http/http.dart' as http;
 
 class cdashboard extends StatefulWidget {
   const cdashboard({super.key});
@@ -80,6 +81,7 @@ class cdash extends StatefulWidget {
 }
 
 class _cdashState extends State<cdash> {
+  late var acad = academyfinal;
   List<rating> chartdata = [
     rating("Forehand", 9),
     rating("Backhand", 8),
@@ -93,6 +95,7 @@ class _cdashState extends State<cdash> {
   @override
   void initState() {
     super.initState();
+
     // Check the user's authentication status
     var user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -190,6 +193,7 @@ class _cdashState extends State<cdash> {
                         );
                       }
                       final academyfinal = snapshot.data;
+
                       return StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection("Academies")
@@ -213,285 +217,288 @@ class _cdashState extends State<cdash> {
                             return SliverList(
                                 delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                return GFListTile(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          enableDrag: true,
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(41),
-                                                  topRight:
-                                                      Radius.circular(41))),
-                                          context: context,
-                                          builder: (context) {
-                                            return Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      (BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  40),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  40))),
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                ),
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: 500,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: CustomScrollView(
-                                                      slivers: [
-                                                        SliverList(
-                                                            delegate:
-                                                                SliverChildListDelegate([
-                                                          Center(
-                                                            child: AutoSizeText(
-                                                              "${userSnapshot[index]['name']}",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .titleSmall,
-                                                            ),
-                                                          ),
-                                                          Center(
-                                                            child: AutoSizeText(
-                                                              "age:  ${userSnapshot[index]['age']}",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .titleMedium,
-                                                            ),
-                                                          ),
-                                                          Center(
-                                                            child: AutoSizeText(
-                                                              "session: ${userSnapshot[index]['session']}",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .titleMedium,
-                                                            ),
-                                                          ),
-                                                          Center(
-                                                            child: AutoSizeText(
-                                                              "gender: ${userSnapshot[index]['gender']}",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .titleMedium,
-                                                            ),
-                                                          ),
-                                                        ])),
-                                                        SliverToBoxAdapter(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .topLeft,
-                                                              child: Text(
-                                                                "Statistics",
+                                return Slidable(
+                                  endActionPane: ActionPane(
+                                      motion: StretchMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (context) async {
+                                            await FirebaseFirestore.instance
+                                                .collection("Academies")
+                                                .doc(academyfinal)
+                                                .collection("Students")
+                                                .doc(userSnapshot![index].id)
+                                                .delete();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text('Item deleted'),
+                                            ));
+                                          },
+                                          icon: Icons.delete,
+                                          backgroundColor: Colors.red,
+                                        )
+                                      ]),
+                                  startActionPane: ActionPane(
+                                      motion: const StretchMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (context) {
+                                            sendPushNotif(userSnapshot![index]
+                                                    ['userToken']
+                                                .toString());
+                                          },
+                                          backgroundColor: Colors.yellow,
+                                          icon: Icons.notifications_on_rounded,
+                                        )
+                                      ]),
+                                  child: GFListTile(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            enableDrag: true,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(41),
+                                                    topRight:
+                                                        Radius.circular(41))),
+                                            context: context,
+                                            builder: (context) {
+                                              return Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        (BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    40),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    40))),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                  ),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 500,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: CustomScrollView(
+                                                        slivers: [
+                                                          SliverList(
+                                                              delegate:
+                                                                  SliverChildListDelegate([
+                                                            Center(
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "${userSnapshot[index]['name']}",
                                                                 style: Theme.of(
                                                                         context)
                                                                     .textTheme
                                                                     .titleSmall,
                                                               ),
                                                             ),
+                                                            Center(
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "age:  ${userSnapshot[index]['age']}",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleMedium,
+                                                              ),
+                                                            ),
+                                                            Center(
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "session: ${userSnapshot[index]['session']}",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleMedium,
+                                                              ),
+                                                            ),
+                                                            Center(
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "gender: ${userSnapshot[index]['gender']}",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleMedium,
+                                                              ),
+                                                            ),
+                                                          ])),
+                                                          SliverToBoxAdapter(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Align(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topLeft,
+                                                                child: Text(
+                                                                  "Statistics",
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .titleSmall,
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        SliverToBoxAdapter(
-                                                          child:
-                                                              SfCartesianChart(
-                                                                  primaryXAxis:
-                                                                      CategoryAxis(),
-                                                                  // Chart title
-                                                                  title: ChartTitle(
-                                                                      text:
-                                                                          'Metrics',
-                                                                      textStyle: TextStyle(
-                                                                          color: Colors
-                                                                              .white)),
-                                                                  // Enable legend
+                                                          SliverToBoxAdapter(
+                                                            child:
+                                                                SfCartesianChart(
+                                                                    primaryXAxis:
+                                                                        CategoryAxis(),
+                                                                    // Chart title
+                                                                    title: ChartTitle(
+                                                                        text:
+                                                                            'Metrics',
+                                                                        textStyle: TextStyle(
+                                                                            color: Colors
+                                                                                .white)),
+                                                                    // Enable legend
 
-                                                                  // Enable tooltip
-                                                                  tooltipBehavior:
-                                                                      TooltipBehavior(
-                                                                          enable:
-                                                                              true),
-                                                                  series: <ChartSeries<
-                                                                      rating,
-                                                                      String>>[
-                                                                LineSeries<
+                                                                    // Enable tooltip
+                                                                    tooltipBehavior:
+                                                                        TooltipBehavior(
+                                                                            enable:
+                                                                                true),
+                                                                    series: <ChartSeries<
                                                                         rating,
-                                                                        String>(
-                                                                    isVisible:
-                                                                        true,
-                                                                    enableTooltip:
-                                                                        true,
-                                                                    color: Theme
-                                                                            .of(
-                                                                                context)
-                                                                        .colorScheme
-                                                                        .secondary,
-                                                                    dataSource: [
-                                                                      rating(
-                                                                          "Forehand",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'forehand']),
-                                                                      rating(
-                                                                          "Backhand",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'bh']),
-                                                                      rating(
-                                                                          "Services",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'ser']),
-                                                                      rating(
-                                                                          "Agility",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'ag']),
-                                                                      rating(
-                                                                          "Reflexes",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'ref']),
-                                                                      rating(
-                                                                          "Flexibility",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'fl']),
-                                                                      rating(
-                                                                          "Stamina",
-                                                                          userSnapshot[index]
-                                                                              [
-                                                                              'st']),
-                                                                    ],
-                                                                    xValueMapper: (rating
-                                                                                sales,
-                                                                            _) =>
-                                                                        sales
-                                                                            .name,
-                                                                    yValueMapper: (rating
-                                                                                sales,
-                                                                            _) =>
-                                                                        sales
-                                                                            .ratings,
+                                                                        String>>[
+                                                                  LineSeries<
+                                                                          rating,
+                                                                          String>(
+                                                                      isVisible:
+                                                                          true,
+                                                                      enableTooltip:
+                                                                          true,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .secondary,
+                                                                      dataSource: [
+                                                                        rating(
+                                                                            "Forehand",
+                                                                            userSnapshot[index]['forehand']),
+                                                                        rating(
+                                                                            "Backhand",
+                                                                            userSnapshot[index]['bh']),
+                                                                        rating(
+                                                                            "Services",
+                                                                            userSnapshot[index]['ser']),
+                                                                        rating(
+                                                                            "Agility",
+                                                                            userSnapshot[index]['ag']),
+                                                                        rating(
+                                                                            "Reflexes",
+                                                                            userSnapshot[index]['ref']),
+                                                                        rating(
+                                                                            "Flexibility",
+                                                                            userSnapshot[index]['fl']),
+                                                                        rating(
+                                                                            "Stamina",
+                                                                            userSnapshot[index]['st']),
+                                                                      ],
+                                                                      xValueMapper: (rating sales,
+                                                                              _) =>
+                                                                          sales
+                                                                              .name,
+                                                                      yValueMapper: (rating sales,
+                                                                              _) =>
+                                                                          sales
+                                                                              .ratings,
 
-                                                                    // Enab0le data label
-                                                                    dataLabelSettings:
-                                                                        DataLabelSettings(
-                                                                            isVisible:
-                                                                                true))
-                                                              ]),
-                                                        ),
-                                                        SliverToBoxAdapter(
-                                                          child: Divider(
-                                                            thickness: 0.1,
-                                                            color: Colors.white,
+                                                                      // Enab0le data label
+                                                                      dataLabelSettings:
+                                                                          DataLabelSettings(
+                                                                              isVisible: true))
+                                                                ]),
                                                           ),
-                                                        ),
-                                                        SliverToBoxAdapter(
-                                                          child: barchart(),
-                                                        ),
-                                                        SliverToBoxAdapter(
-                                                          child: Divider(
-                                                            thickness: 0.1,
-                                                            color: Colors.white,
+                                                          SliverToBoxAdapter(
+                                                            child: Divider(
+                                                              thickness: 0.1,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        SliverToBoxAdapter(
-                                                            child: Container(
-                                                                color: Theme
-                                                                        .of(
-                                                                            context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.3,
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.3,
-                                                                child:
-                                                                    PieChart())),
-                                                      ]),
-                                                ));
-                                          });
-                                    },
-                                    radius: 20,
-                                    avatar: CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage: NetworkImage(
-                                            'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
-                                    enabled: true,
-                                    shadow: BoxShadow(
-                                        color: Colors.white,
-                                        offset: Offset.infinite,
-                                        spreadRadius: 50),
-                                    color: Color.fromRGBO(62, 62, 66, 1),
-                                    title: Text(
-                                      userSnapshot![index]['name'],
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
-                                    ),
-                                    subTitle: Text(
-                                      "Age: ${userSnapshot[index]['age']}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                    icon: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: IconButton(
-                                        onPressed: () async {
-                                          await FirebaseFirestore.instance
-                                              .collection("Academies")
-                                              .doc(academyfinal)
-                                              .collection("Students")
-                                              .doc(userSnapshot[index].id)
-                                              .delete();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text('Item deleted'),
-                                          ));
-                                        },
-                                        icon: Icon(
-                                          Icons.delete_rounded,
-                                          color: Colors.red,
-                                        ),
+                                                          SliverToBoxAdapter(
+                                                            child: barchart(),
+                                                          ),
+                                                          SliverToBoxAdapter(
+                                                            child: Divider(
+                                                              thickness: 0.1,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                          SliverToBoxAdapter(
+                                                              child: Container(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.3,
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.3,
+                                                                  child:
+                                                                      PieChart())),
+                                                        ]),
+                                                  ));
+                                            });
+                                      },
+                                      radius: 20,
+                                      avatar: CircleAvatar(
+                                          radius: 30,
+                                          backgroundImage: NetworkImage(
+                                              'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
+                                      enabled: true,
+                                      shadow: BoxShadow(
+                                          color: Colors.white,
+                                          offset: Offset.infinite,
+                                          spreadRadius: 50),
+                                      color: Color.fromRGBO(62, 62, 66, 1),
+                                      title: Text(
+                                        userSnapshot![index]['name'],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall,
                                       ),
-                                    ),
-                                    description: Column(
-                                      children: [
-                                        Text(
-                                          userSnapshot[index]['session'],
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineMedium,
-                                        ),
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.all(
-                                        MediaQuery.of(context).size.height *
-                                            0.020),
-                                    margin: EdgeInsets.all(5));
+                                      subTitle: Text(
+                                        "Age: ${userSnapshot[index]['age']}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                      description: Column(
+                                        children: [
+                                          Text(
+                                            userSnapshot[index]['session'],
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium,
+                                          ),
+                                        ],
+                                      ),
+                                      padding: EdgeInsets.all(
+                                          MediaQuery.of(context).size.height *
+                                              0.020),
+                                      margin: EdgeInsets.all(5)),
+                                );
                               },
                               childCount: snapshot.data!.docs.length,
                             ));
@@ -513,10 +520,30 @@ class _cdashState extends State<cdash> {
           .doc(user.uid)
           .get();
       var academy = academyName.data()!['academyName'];
-      print(academy);
+
       return academy;
     }
     return ''; // Return a default value or handle the null case as needed
+  }
+
+  Future<void> sendPushNotif(String token) async {
+    await http.post(Uri.parse("https://fcm.googleapis.com/send"), headers: {
+      "Content-Type": "application/json",
+      "Authorization":
+          "key=AAAAVsN8gRE:APA91bH_naxr9nig5tAJv2BwC01wSFMg19dXemM1MB13AJ5K2Y4HkKG12RFqcql29HRN7BmNnPEN9hBy5nI-Kff7gpK8IHBkPjwwOEcK1p-MG7AIBt2FTx9I2QLE7xzDDM6fF7hiCl-j"
+    }, body: {
+      "to": "$token",
+      "notification": {
+        "title": "Fees Reminder",
+        "body": "Please Pay your fees by 19/10/2003",
+        "mutable_content": true,
+        "sound": "Tri-tone"
+      },
+      "data": {
+        "url": "<url of media image>",
+        "dl": "<deeplink action on tap of notification>"
+      }
+    });
   }
 
   Future<String> getcoachname() async {
@@ -527,7 +554,7 @@ class _cdashState extends State<cdash> {
           .doc(user.uid)
           .get();
       var coach = academyName.data()!['name'];
-      print(coach);
+
       return coach;
     }
     return ''; // Return a default value or handle the null case as needed

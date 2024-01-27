@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,9 +24,24 @@ class _sloginState extends State<slogin> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController uid = TextEditingController();
+  TextEditingController acadName = TextEditingController();
   bool loggedIn = false;
   bool uidregistered = false;
   var allS = FirebaseFirestore.instance.collection("AllStudents");
+
+  Future<void> storeAndGenKey(String s1, String s2) async {
+    String? a = "";
+    var _messaging = FirebaseMessaging.instance;
+    a = await _messaging.getToken();
+    print('$a');
+    await FirebaseFirestore.instance
+        .collection("Academies")
+        .doc(s1)
+        .collection("Students")
+        .doc(s2)
+        .update({"userToken": '$a'});
+  }
+
   Future<void> _authenticateWithEmailAndPassword(context) async {
     if (formkey.currentState!.validate()) {
       BlocProvider.of<AuthenticationBloc>(context).add(
@@ -220,6 +238,40 @@ class _sloginState extends State<slogin> {
                                 ),
                               ),
                               Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 30),
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      fontFamily: "Nexa", color: Colors.black),
+                                  validator: (value) {
+                                    if (isInt(value.toString())) {
+                                      return "Invalid Input";
+                                    } else if (value?.isEmpty == true) {
+                                      return "Input can't be null";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  autocorrect: true,
+                                  decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      labelText: "Enter Academy Name",
+                                      labelStyle: TextStyle(fontFamily: "Nexa"),
+                                      border: OutlineInputBorder(
+                                          gapPadding: 2,
+                                          borderRadius:
+                                              BorderRadius.circular(20))),
+                                  textInputAction: TextInputAction.next,
+                                  onSaved: (newValue) {
+                                    setState(() {
+                                      acadName.text = newValue.toString();
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
                                 padding: EdgeInsets.all(8),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -276,6 +328,8 @@ class _sloginState extends State<slogin> {
                                                     "isUidRegistered", true);
                                                 await _authenticateWithEmailAndPassword(
                                                     context);
+                                                await storeAndGenKey(
+                                                    acadName.text, uid.text);
 
                                                 final snackbar = SnackBar(
                                                   content: Text(

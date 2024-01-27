@@ -28,7 +28,8 @@ class StaddBloc extends Bloc<StaddEvent, StaddState> {
                 fl: event.fl,
                 ser: event.ser,
                 st: event.st,
-                ref: event.ref),
+                ref: event.ref,
+                userToken: event.userToken),
             event.uid);
         await databaseService.addinacademies(
             studentInfo(
@@ -45,7 +46,8 @@ class StaddBloc extends Bloc<StaddEvent, StaddState> {
                 fl: event.fl,
                 ser: event.ser,
                 st: event.st,
-                ref: event.ref),
+                ref: event.ref,
+                userToken: event.userToken),
             event.uid,
             event.academyId);
         emit(sentstdata());

@@ -15,6 +15,7 @@ class studentInfo with ChangeNotifier {
   double ser = 0;
   double st = 0;
   double ref = 0;
+  String userToken = "";
 
   studentInfo(
       {required this.academyId,
@@ -30,7 +31,8 @@ class studentInfo with ChangeNotifier {
       required this.fl,
       required this.ser,
       required this.st,
-      required this.ref});
+      required this.ref,
+      required this.userToken});
   Map<String, dynamic> toJson() => {
         "academyId": academyId,
         "name": name,
@@ -45,7 +47,8 @@ class studentInfo with ChangeNotifier {
         "fl": fl,
         "ser": ser,
         "st": st,
-        "ref": ref
+        "ref": ref,
+        "userToken": userToken
       };
   static studentInfo fromJson(Map<String, dynamic> json) {
     return studentInfo(
@@ -62,7 +65,8 @@ class studentInfo with ChangeNotifier {
         fl: json['fl'],
         ser: json['ser'],
         st: json['st'],
-        ref: json['ref']);
+        ref: json['ref'],
+        userToken: json['userToken']);
   }
 }
 

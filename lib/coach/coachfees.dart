@@ -14,6 +14,21 @@ class cfees extends StatefulWidget {
 }
 
 class _cfeesState extends State<cfees> {
+  Future<String> getacademyname() async {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var academyName = await FirebaseFirestore.instance
+          .collection('Coaches')
+          .doc(user.uid)
+          .get();
+      var academy = academyName.data()!['academyName'];
+      print(academy);
+      return academy;
+    }
+    return ''; // Return a default value or handle the null case as needed
+  }
+
+  @override
   User? userr = FirebaseAuth.instance.currentUser;
   final TextEditingController _controller = TextEditingController();
 
@@ -145,7 +160,7 @@ class _cfeesState extends State<cfees> {
                                   margin: const EdgeInsets.only(top: 8),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 14),
-                                  height: 300,
+                                  height: 100,
                                   color: Colors.amber,
                                 );
                               },
@@ -154,6 +169,7 @@ class _cfeesState extends State<cfees> {
                           }
                         }),
                   ),
+                  AnimatedButton(onPressed: () {}, child: Text("Test"))
                 ],
               ),
               Column(

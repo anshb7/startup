@@ -203,6 +203,7 @@ class _metricadditionState extends State<metricaddition> {
         ser: imp['Services']!,
         st: imp['Stamina']!,
         ref: imp['Reflexes']!,
+        userToken: "",
         uid: uiid));
   }
 
@@ -223,6 +224,7 @@ class _metricadditionState extends State<metricaddition> {
       ser: imp['Services']!,
       st: imp['Stamina']!,
       ref: imp['Reflexes']!,
+      userToken: "",
       uid: uiid,
     ));
   }

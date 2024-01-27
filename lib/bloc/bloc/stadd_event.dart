@@ -23,6 +23,7 @@ class sendstdata extends StaddEvent {
   double ser = 0;
   double st = 0;
   double ref = 0;
+  String userToken = "";
   String uid = '';
 
   sendstdata(
@@ -40,7 +41,8 @@ class sendstdata extends StaddEvent {
       required this.ser,
       required this.st,
       required this.ref,
-      required this.uid});
+      required this.uid,
+      required this.userToken});
   List<Object> get props => [
         academyId,
         name,
@@ -57,5 +59,6 @@ class sendstdata extends StaddEvent {
         st,
         ref,
         uid,
+        userToken
       ];
 }

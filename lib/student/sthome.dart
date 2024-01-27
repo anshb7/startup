@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startup/bloc/auth_bloc.dart';
 
 class sthome extends StatefulWidget {
   const sthome({super.key});
@@ -17,6 +20,18 @@ class _sthomeState extends State<sthome> {
         slivers: [
           SliverAppBar.large(
             actions: [
+              IconButton(
+                  icon: Icon(Icons.logout_sharp),
+                  onPressed: () async {
+                    var sp = await SharedPreferences.getInstance();
+                    sp.setBool("isLoggedIn", false);
+                    BlocProvider.of<AuthenticationBloc>(context).add(SignOut());
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context, true);
+                    } else {
+                      Navigator.pushReplacementNamed(context, '/');
+                    }
+                  }),
               IconButton(
                   onPressed: () {
                     Navigator.pushNamed(context, "/stprofile");
