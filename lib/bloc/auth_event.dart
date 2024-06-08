@@ -6,15 +6,26 @@ abstract class AuthenticationEvent {
   List<Object> get props => [];
 }
 
-class SignInUser extends AuthenticationEvent {
-  final String email;
-  final String password;
+class OTPcodesent extends AuthenticationEvent {
+  final String phoneNo;
 
-  SignInUser(this.email, this.password);
-
-  @override
-  List<Object> get props => [email, password];
+  OTPcodesent(this.phoneNo);
 }
+
+class signInwithPhone extends AuthenticationEvent {
+  final String smscode;
+
+  signInwithPhone(this.smscode);
+}
+
+// class SignInUser extends AuthenticationEvent {
+//   final String phoneNo;
+
+//   SignInUser(this.email);
+
+//   @override
+//   List<Object> get props => [email, password];
+// }
 
 class SignUpUser extends AuthenticationEvent {
   final String email;

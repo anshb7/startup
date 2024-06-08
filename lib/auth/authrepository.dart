@@ -1,57 +1,57 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:startup/student/otpScreen.dart';
 import 'package:startup/usermodel.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
-  Future<UserModel?> signUp({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      UserCredential userCredential = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
-      User? fuser = userCredential.user;
-      if (fuser != null) {
-        return UserModel(email: fuser.email, id: fuser.uid);
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak_password') {
-        throw Exception('Your password is too weak');
-      }
-      if (e.code == 'email-already-in-use') {
-        throw Exception('Email is already being used');
-      }
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-    return null;
-  }
+  String verificationID = "";
 
-  Future<UserModel?> signIn({
-    required String email,
-    required String password,
+  get credential => null;
+  Future<void> phoneAuth({
+    required String phoneNo,
   }) async {
-    try {
-      UserCredential userCredential = await _firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password);
-      User? fuser = userCredential.user;
-      if (fuser != null) {
-        return UserModel(email: fuser.email, id: fuser.uid);
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
-    return null;
+    print(phoneNo);
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNo,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await _firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {
+          print('The provided phone number is not valid.');
+        } else {
+          print("${e.toString()}");
+        }
+        //showDialog(context: context, builder: builder)
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        verificationID = verificationId;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        verificationID = verificationId;
+      },
+    );
+
+    print(verificationID);
   }
 
   Future<void> signOut() async {
+    print("signout called");
     final user = _firebaseAuth.currentUser;
     if (user != null) {
       await _firebaseAuth.signOut();
+    }
+  }
+
+  Future<void> verifyPhoneNumber(String smscode) async {
+    try {
+      PhoneAuthCredential credential = await PhoneAuthProvider.credential(
+          verificationId: verificationID, smsCode: smscode);
+
+      await _firebaseAuth.signInWithCredential(credential);
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

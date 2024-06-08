@@ -27,19 +27,18 @@ class cdashboard extends StatefulWidget {
 }
 
 class _cdashboardState extends State<cdashboard> {
-  NotificationServices notificationServices = NotificationServices();
+  //NotificationServices notificationServices = NotificationServices();
+  @override
+  var screens = [cdash(), cfees()];
+  var user = FirebaseAuth.instance.currentUser;
+  var _bottomNavIndex = 0;
   @override
   void initState() {
-    notificationServices.requestNotificationPermission();
-    notificationServices.forgroundMessage();
-    notificationServices.firebaseInit(context);
-
-    notificationServices.isTokenRefresh();
+    print(user!.uid.toString());
+    // TODO: implement initState
     super.initState();
   }
 
-  var screens = [cdash(), cfees()];
-  var _bottomNavIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,13 +96,13 @@ class _cdashState extends State<cdash> {
     super.initState();
 
     // Check the user's authentication status
+
     var user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-    } else {
-      // User is authenticated, continue with other initialization logic
-      academyfuture = getacademyname();
-      coachname = getcoachname();
-    }
+    print("hello hello");
+
+    // User is authenticated, continue with other initialization logic
+    academyfuture = getacademyname();
+    coachname = getcoachname();
   }
 
   @override
@@ -115,6 +114,7 @@ class _cdashState extends State<cdash> {
           if (state is AuthenticationInitialState) {
             Navigator.pushReplacementNamed(context, "/");
           }
+
           if (state is AuthenticationFailureState) {
             // Displaying the error message if the user is not authenticated
             ScaffoldMessenger.of(context)
@@ -148,9 +148,11 @@ class _cdashState extends State<cdash> {
                         ),
                         onPressed: () async {
                           var sp = await SharedPreferences.getInstance();
-                          sp.setBool("isLoggedIn", false);
+                          sp.setBool("isCoachLoggedIn", false);
                           BlocProvider.of<AuthenticationBloc>(context)
                               .add(SignOut());
+                          print("signOut");
+
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context, true);
                           } else {
@@ -236,19 +238,6 @@ class _cdashState extends State<cdash> {
                                           },
                                           icon: Icons.delete,
                                           backgroundColor: Colors.red,
-                                        )
-                                      ]),
-                                  startActionPane: ActionPane(
-                                      motion: const StretchMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (context) {
-                                            sendPushNotif(userSnapshot![index]
-                                                    ['userToken']
-                                                .toString());
-                                          },
-                                          backgroundColor: Colors.yellow,
-                                          icon: Icons.notifications_on_rounded,
                                         )
                                       ]),
                                   child: GFListTile(

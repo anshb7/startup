@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:startup/auth/authrepository.dart';
+import 'package:startup/student/otpScreen.dart';
 
 import 'package:startup/usermodel.dart';
 
@@ -13,37 +15,37 @@ class AuthenticationBloc
 
   AuthenticationBloc() : super(AuthenticationInitialState()) {
     on<AuthenticationEvent>((event, emit) {});
-    on<SignInUser>((event, emit) async {
+    on<signInwithPhone>(
+      (event, emit) async {
+        emit(AuthenticationLoadingState(isLoading: true));
+        try {
+          await authService.verifyPhoneNumber(event.smscode);
+        } catch (e) {
+          emit(AuthenticationFailureState("Not Signed In"));
+        }
+        emit(AuthenticationSuccessState());
+
+        emit(AuthenticationLoadingState(isLoading: false));
+      },
+    );
+    on<OTPcodesent>((event, emit) async {
       emit(AuthenticationLoadingState(isLoading: true));
       try {
-        final UserModel? user = await authService.signIn(
-            email: event.email, password: event.password);
-        if (user != null) {
-          emit(AuthenticationSuccessState(user));
-        } else {
-          emit(const AuthenticationFailureState('user sign in failed'));
-        }
+        await authService.phoneAuth(phoneNo: event.phoneNo);
+
+        // final UserModel? user = await authService.signIn(
+        //     email: event.email, password: event.password);
+        // if (user != null) {
+        //   emit(AuthenticationSuccessState(user));
+        // } else {
+        //   emit(const AuthenticationFailureState('user sign in failed'));
+        // }
       } catch (e) {
         print(e.toString());
       }
+      emit(authCodeSent());
       emit(AuthenticationLoadingState(isLoading: false));
       emit(AuthenticationInitialState());
-    });
-
-    on<SignUpUser>((event, emit) async {
-      emit(AuthenticationLoadingState(isLoading: true));
-      try {
-        final UserModel? user = await authService.signUp(
-            email: event.email, password: event.password);
-        if (user != null) {
-          emit(AuthenticationSuccessState(user));
-        } else {
-          emit(const AuthenticationFailureState('create user failed'));
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-      emit(AuthenticationLoadingState(isLoading: false));
     });
 
     on<SignOut>((event, emit) async {

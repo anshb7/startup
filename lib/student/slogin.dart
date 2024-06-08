@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:animated_button/animated_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startup/student/otpScreen.dart';
 import 'package:startup/student/stover.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -20,8 +22,10 @@ class slogin extends StatefulWidget {
 }
 
 class _sloginState extends State<slogin> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  String verificationID = "";
   final formkey = GlobalKey<FormState>();
-  TextEditingController email = TextEditingController();
+  TextEditingController phoneNo = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController uid = TextEditingController();
   TextEditingController acadName = TextEditingController();
@@ -42,11 +46,10 @@ class _sloginState extends State<slogin> {
         .update({"userToken": '$a'});
   }
 
-  Future<void> _authenticateWithEmailAndPassword(context) async {
+  Future<void> _authenticateWithPhone(context) async {
     if (formkey.currentState!.validate()) {
-      BlocProvider.of<AuthenticationBloc>(context).add(
-        SignInUser(email.text, password.text),
-      );
+      BlocProvider.of<AuthenticationBloc>(context)
+          .add(OTPcodesent(phoneNo.text));
     }
     var prefs = await SharedPreferences.getInstance();
     loggedIn = prefs.getBool("isLoggedIn") ?? false;
@@ -63,6 +66,14 @@ class _sloginState extends State<slogin> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
+          if (state is authCodeSent) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (ctx) => otpScreen(
+                          phoneNo: phoneNo.text,
+                        )));
+          }
           if (state is AuthenticationSuccessState &&
               loggedIn &&
               uidregistered) {
@@ -141,10 +152,11 @@ class _sloginState extends State<slogin> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 30),
                                 child: TextFormField(
+                                  keyboardType: TextInputType.phone,
                                   style: TextStyle(
                                       fontFamily: "Nexa", color: Colors.black),
                                   validator: (value) {
-                                    if (isInt(value.toString())) {
+                                    if (!isInt(value.toString())) {
                                       return "Invalid Input";
                                     } else if (value?.isEmpty == true) {
                                       return "Input can't be null";
@@ -157,7 +169,7 @@ class _sloginState extends State<slogin> {
                                       enabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20)),
-                                      labelText: "Enter Email",
+                                      labelText: "Enter Phone No.",
                                       labelStyle: TextStyle(fontFamily: "Nexa"),
                                       border: OutlineInputBorder(
                                           gapPadding: 2,
@@ -166,39 +178,8 @@ class _sloginState extends State<slogin> {
                                   textInputAction: TextInputAction.next,
                                   onSaved: (newValue) {
                                     setState(() {
-                                      email.text = newValue.toString();
-                                    });
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 30),
-                                child: TextFormField(
-                                  obscureText: true,
-                                  style: TextStyle(
-                                      fontFamily: "Nexa", color: Colors.black),
-                                  autocorrect: true,
-                                  decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      labelStyle: TextStyle(fontFamily: "Nexa"),
-                                      labelText: "Enter Password",
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20))),
-                                  textInputAction: TextInputAction.next,
-                                  validator: (value) {
-                                    if (value?.isEmpty == true) {
-                                      return "Input can't be null";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  onSaved: (newValue) {
-                                    setState(() {
-                                      password.text = newValue.toString();
+                                      phoneNo.text =
+                                          "+91" + newValue.toString();
                                     });
                                   },
                                 ),
@@ -239,65 +220,6 @@ class _sloginState extends State<slogin> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 30),
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      fontFamily: "Nexa", color: Colors.black),
-                                  validator: (value) {
-                                    if (isInt(value.toString())) {
-                                      return "Invalid Input";
-                                    } else if (value?.isEmpty == true) {
-                                      return "Input can't be null";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  autocorrect: true,
-                                  decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      labelText: "Enter Academy Name",
-                                      labelStyle: TextStyle(fontFamily: "Nexa"),
-                                      border: OutlineInputBorder(
-                                          gapPadding: 2,
-                                          borderRadius:
-                                              BorderRadius.circular(20))),
-                                  textInputAction: TextInputAction.next,
-                                  onSaved: (newValue) {
-                                    setState(() {
-                                      acadName.text = newValue.toString();
-                                    });
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    AutoSizeText(
-                                      "New Student?",
-                                      style: TextStyle(
-                                          fontFamily: "Nexa", fontSize: 15),
-                                    ),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                              context, '/ssignup');
-                                        },
-                                        child: AutoSizeText(
-                                          "Sign Up Now!",
-                                          style: TextStyle(
-                                              color: Colors.blue,
-                                              fontFamily: "Nexa",
-                                              fontSize: 15),
-                                        ))
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 child: Container(
                                   child: Align(
@@ -313,34 +235,34 @@ class _sloginState extends State<slogin> {
                                         final isValid =
                                             formkey.currentState?.validate();
                                         formkey.currentState?.save();
-                                        print(uid.text);
+
                                         allS
-                                            .doc(uid.text)
+                                            .doc("AnshTGE1-o__AO")
                                             .get()
                                             .then((value) async {
                                           if (value.exists) {
                                             if (isValid!) {
                                               try {
-                                                var sp = await SharedPreferences
-                                                    .getInstance();
-                                                sp.setBool("isLoggedIn", true);
-                                                sp.setBool(
-                                                    "isUidRegistered", true);
-                                                await _authenticateWithEmailAndPassword(
+                                                // var sp = await SharedPreferences
+                                                //     .getInstance();
+                                                // sp.setBool("isLoggedIn", true);
+                                                // sp.setBool(
+                                                //     "isUidRegistered", true);
+                                                await _authenticateWithPhone(
                                                     context);
-                                                await storeAndGenKey(
-                                                    acadName.text, uid.text);
+                                                // await storeAndGenKey(
+                                                //     acadName.text, uid.text);
 
-                                                final snackbar = SnackBar(
-                                                  content: Text(
-                                                    "Successfully Added!",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.white),
-                                                  ),
-                                                );
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(snackbar);
+                                                // final snackbar = SnackBar(
+                                                //   content: Text(
+                                                //     "Successfully Added!",
+                                                //     style: TextStyle(
+                                                //         fontSize: 15,
+                                                //         color: Colors.white),
+                                                //   ),
+                                                // );
+                                                // ScaffoldMessenger.of(context)
+                                                //     .showSnackBar(snackbar);
                                                 // Navigator.push(
                                                 //     context,
                                                 //     MaterialPageRoute(

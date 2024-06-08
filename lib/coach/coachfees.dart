@@ -73,6 +73,7 @@ class _cfeesState extends State<cfees> {
             body: TabBarView(children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -113,8 +114,8 @@ class _cfeesState extends State<cfees> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 AutoSizeText(
-                                  """Total Outstanding 
-            Fees : """,
+                                  """Total Outstanding
+                  Fees : """,
                                   style: Theme.of(context).textTheme.labelSmall,
                                 ),
                                 AutoSizeText(
@@ -133,43 +134,54 @@ class _cfeesState extends State<cfees> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("Coaches")
-                            .doc(userr!.uid.toString())
-                            .collection("payments")
-                            .where("isDue", isEqualTo: 1)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (!snapshot.hasData) {
-                            return Center(
-                              child: Text(
-                                "No dues to show!",
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                            );
-                          } else {
-                            final userdata = snapshot.data!.docs;
-                            return ListView.builder(
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(top: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 14),
-                                  height: 100,
-                                  color: Colors.amber,
-                                );
-                              },
-                              itemCount: userdata.length,
-                            );
-                          }
-                        }),
-                  ),
-                  AnimatedButton(onPressed: () {}, child: Text("Test"))
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: AutoSizeText(
+                        "This feature will be available soon!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  )
+
+                  // Expanded(
+                  //   child: StreamBuilder<QuerySnapshot>(
+                  //       stream: FirebaseFirestore.instance
+                  //           .collection("Coaches")
+                  //           .doc(userr!.uid.toString())
+                  //           .collection("payments")
+                  //           .where("isDue", isEqualTo: 1)
+                  //           .snapshots(),
+                  //       builder: (context, snapshot) {
+                  //         if (snapshot.connectionState ==
+                  //             ConnectionState.waiting) {
+                  //           return Center(child: CircularProgressIndicator());
+                  //         } else if (!snapshot.hasData) {
+                  //           return Center(
+                  //             child: Text(
+                  //               "No dues to show!",
+                  //               style: Theme.of(context).textTheme.labelSmall,
+                  //             ),
+                  //           );
+                  //         } else {
+                  //           final userdata = snapshot.data!.docs;
+                  //           return ListView.builder(
+                  //             itemBuilder: (context, index) {
+                  //               return Container(
+                  //                 margin: const EdgeInsets.only(top: 8),
+                  //                 padding: const EdgeInsets.symmetric(
+                  //                     horizontal: 14),
+                  //                 height: 100,
+                  //                 color: Colors.amber,
+                  //               );
+                  //             },
+                  //             itemCount: userdata.length,
+                  //           );
+                  //         }
+                  //       }),
+                  // ),
                 ],
               ),
               Column(
@@ -233,74 +245,45 @@ class _cfeesState extends State<cfees> {
                       ),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: SearchAnchor(builder:
+                  //       (BuildContext context, SearchController controller) {
+                  //     return SearchBar(
+                  //       controller: _controller,
+                  //       padding: const MaterialStatePropertyAll<EdgeInsets>(
+                  //           EdgeInsets.symmetric(horizontal: 16.0)),
+                  //       onTap: () {
+                  //         controller.openView();
+                  //       },
+                  //       onChanged: (_) {
+                  //         controller.openView();
+                  //       },
+                  //       leading: const Icon(Icons.search),
+                  //     );
+                  //   }, suggestionsBuilder:
+                  //       (BuildContext context, SearchController controller) {
+                  //     return List<ListTile>.generate(5, (int index) {
+                  //       final String item = 'item $index';
+                  //       return ListTile(
+                  //         title: Text(item),
+                  //         onTap: () {
+                  //           setState(() {
+                  //             controller.closeView(item);
+                  //           });
+                  //         },
+                  //       );
+                  //     });
+                  //   }),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SearchAnchor(builder:
-                        (BuildContext context, SearchController controller) {
-                      return SearchBar(
-                        controller: _controller,
-                        padding: const MaterialStatePropertyAll<EdgeInsets>(
-                            EdgeInsets.symmetric(horizontal: 16.0)),
-                        onTap: () {
-                          controller.openView();
-                        },
-                        onChanged: (_) {
-                          controller.openView();
-                        },
-                        leading: const Icon(Icons.search),
-                      );
-                    }, suggestionsBuilder:
-                        (BuildContext context, SearchController controller) {
-                      return List<ListTile>.generate(5, (int index) {
-                        final String item = 'item $index';
-                        return ListTile(
-                          title: Text(item),
-                          onTap: () {
-                            setState(() {
-                              controller.closeView(item);
-                            });
-                          },
-                        );
-                      });
-                    }),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: ((context, index) => Container(
-                            height: MediaQuery.of(context).size.height * 0.14,
-                            width: double.infinity,
-                            child: GFListTile(
-                                radius: 20,
-                                avatar: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(
-                                        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80')),
-                                enabled: true,
-                                shadow: BoxShadow(
-                                    color: Colors.white,
-                                    offset: Offset.infinite,
-                                    spreadRadius: 30),
-                                color: Color.fromRGBO(62, 62, 66, 1),
-                                title: Text(
-                                  "Mr.Chandalia",
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                ),
-                                subTitle: Text(
-                                  " Rs 2000",
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                description: Text(
-                                  "Date Credited : [Date]",
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                padding: EdgeInsets.all(
-                                    MediaQuery.of(context).size.height * 0.020),
-                                margin: EdgeInsets.all(5)),
-                          )),
-                      itemCount: 5,
+                    child: Center(
+                      child: AutoSizeText(
+                        "This feature will be available soon!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
                     ),
                   )
                 ],

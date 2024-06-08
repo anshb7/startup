@@ -20,9 +20,19 @@ class academyReg extends StatefulWidget {
 }
 
 class _academyRegState extends State<academyReg> {
-  final user = FirebaseAuth.instance.currentUser;
+  var user = FirebaseAuth.instance.currentUser;
   CoachInfo coach = CoachInfo(
       name: "", age: 0, phNo: 0, academyName: "", sportName: "", noOfExp: 0);
+  @override
+  void initState() {
+    // final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print("no user");
+    } else {
+      print("yes user");
+    }
+    super.initState();
+  }
 
   final formkey = GlobalKey<FormState>();
   String name = "";
@@ -366,7 +376,7 @@ class _academyRegState extends State<academyReg> {
                                         _sendcoachdata(context);
                                         var sp = await SharedPreferences
                                             .getInstance();
-                                        sp.setBool("isRegistered", true);
+                                        sp.setBool("isAcadRegistered", true);
                                       },
                                       child: AutoSizeText(
                                         "Let's go!",

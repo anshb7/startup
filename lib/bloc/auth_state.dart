@@ -8,19 +8,15 @@ abstract class AuthenticationState {
 
 class AuthenticationInitialState extends AuthenticationState {}
 
+class authCodeSent extends AuthenticationState {}
+
 class AuthenticationLoadingState extends AuthenticationState {
   final bool isLoading;
 
   AuthenticationLoadingState({required this.isLoading});
 }
 
-class AuthenticationSuccessState extends AuthenticationState {
-  final UserModel user;
-
-  const AuthenticationSuccessState(this.user);
-  @override
-  List<Object> get props => [user];
-}
+class AuthenticationSuccessState extends AuthenticationState {}
 
 class AuthenticationFailureState extends AuthenticationState {
   final String errorMessage;
